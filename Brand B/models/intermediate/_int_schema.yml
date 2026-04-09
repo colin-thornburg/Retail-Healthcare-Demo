@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: int_cases_enriched
+    description: >
+      Implant cases enriched with patient, center, and aggregated billing data.
+      Grain: one row per case_id (a case groups multiple visits in an implant journey).
+    columns:
+      - name: case_id
+        description: "Primary key — one row per implant case"
+        data_tests:
+          - unique
+          - not_null
+      - name: patient_id
+        description: "Patient undergoing the implant procedure"
+        data_tests:
+          - not_null
+      - name: center_id
+        description: "Implant center managing the case"
+        data_tests:
+          - not_null
+      - name: case_status
+        description: "Derived status: Completed, Lost, or Active"
+      - name: total_case_revenue
+        description: "Sum of all charges across visits in this case"
+      - name: days_consultation_to_surgery
+        description: "Calendar days between consultation and surgery"
+      - name: financing_used
+        description: "True if any visit in the case used financing"
+
+  - name: int_center_monthly_summary
+    description: >
+      Monthly aggregated metrics per implant center.
+      Grain: one row per center_id + visit_month.
+    columns:
+      - name: center_id
+        description: "Implant center identifier"
+        data_tests:
+          - not_null
+      - name: visit_month
+        description: "First day of the month (date_trunc)"
+        data_tests:
+          - not_null
+      - name: total_consultations
+        description: "Number of consultation visits in the month"
+      - name: total_surgeries
+        description: "Number of completed surgery visits in the month"
+      - name: total_revenue
+        description: "Sum of all charges in the month"
+      - name: consultation_to_surgery_rate
+        description: "Fraction of consultations that converted to surgery"
+      - name: financing_pct
+        description: "Fraction of visits where financing was used"

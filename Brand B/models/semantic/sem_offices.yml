@@ -1,0 +1,37 @@
+semantic_models:
+  - name: centers
+    defaults:
+      agg_time_dimension: opened_date
+    description: "Implant center dimension for Brand B"
+    model: ref('dim_centers')
+
+    entities:
+      - name: center
+        type: primary
+        expr: center_id
+
+    dimensions:
+      - name: opened_date
+        type: time
+        expr: "date_trunc(opened_date, DAY)"
+        type_params:
+          time_granularity: day
+      - name: city
+        type: categorical
+      - name: state
+        type: categorical
+      - name: region
+        type: categorical
+      - name: is_active
+        type: categorical
+        expr: "cast(is_active as string)"
+
+    measures:
+      - name: total_centers
+        agg: count
+        expr: center_id
+      - name: active_centers
+        agg: count
+        expr: center_id
+        agg_params:
+          where: "{{ Dimension('center__is_active') }} = 'true'"

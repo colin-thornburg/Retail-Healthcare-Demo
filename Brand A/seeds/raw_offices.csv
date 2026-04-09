@@ -1,0 +1,26 @@
+office_id,office_name,city,state,region,opened_date,office_type,is_active
+1001,Brand A Chicago Loop,Chicago,IL,Midwest,2016-03-15,General,true
+1002,Brand A Indianapolis North,Indianapolis,IN,Midwest,2017-05-20,General,true
+1003,Brand A Columbus Eastland,Columbus,OH,Midwest,2015-09-10,General,true
+1004,Brand A Detroit Warren,Warren,MI,Midwest,2018-02-28,General,true
+1005,Brand A Nashville Cool Springs,Franklin,TN,Southeast,2019-06-15,General,true
+1006,Brand A Charlotte Ballantyne,Charlotte,NC,Southeast,2017-11-01,General,true
+1007,Brand A Atlanta Perimeter,Atlanta,GA,Southeast,2016-08-22,Specialty,true
+1008,Brand A Orlando Lake Mary,Lake Mary,FL,Southeast,2020-01-15,General,true
+1009,Brand A Tampa Brandon,Brandon,FL,Southeast,2018-07-10,General,true
+1010,Brand A Philadelphia Northeast,Philadelphia,PA,Northeast,2015-04-05,General,true
+1011,Brand A Boston Braintree,Braintree,MA,Northeast,2019-09-20,Specialty,true
+1012,Brand A Albany Latham,Latham,NY,Northeast,2017-03-14,General,true
+1013,Brand A Hartford Manchester,Manchester,CT,Northeast,2020-11-30,General,true
+1014,Brand A Dallas Plano,Plano,TX,Southwest,2018-04-22,General,true
+1015,Brand A Houston Katy,Katy,TX,Southwest,2016-12-10,Combo,true
+1016,Brand A Phoenix Mesa,Mesa,AZ,West,2019-08-05,General,true
+1017,Brand A Las Vegas Henderson,Henderson,NV,West,2021-02-14,General,true
+1018,Brand A Denver Aurora,Aurora,CO,West,2020-06-30,General,true
+1019,Brand A St Louis Chesterfield,Chesterfield,MO,Midwest,2017-08-19,General,true
+1020,Brand A Milwaukee Brookfield,Brookfield,WI,Midwest,2018-10-25,General,true
+1021,Brand A Cincinnati Kenwood,Cincinnati,OH,Midwest,2016-05-17,Specialty,true
+1022,Brand A Cleveland Strongsville,Strongsville,OH,Midwest,2015-07-28,General,true
+1023,Brand A Pittsburgh Monroeville,Monroeville,PA,Northeast,2019-01-08,General,true
+1024,Brand A Minneapolis Maple Grove,Maple Grove,MN,Midwest,2020-04-15,General,false
+1025,Brand A Kansas City Overland Park,Overland Park,KS,Midwest,2021-09-12,General,true

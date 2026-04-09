@@ -1,0 +1,13 @@
+clinic_id,clinic_name,city,state,region,opened_date,clinic_type,is_active
+5001,Brand E Scottsdale,Scottsdale,AZ,West,2018-03-12,General Practice,true
+5002,Brand E Mesa East,Mesa,AZ,West,2017-09-20,General Practice,true
+5003,Brand E Tempe,Tempe,AZ,West,2019-05-14,General Practice,true
+5004,Brand E Gilbert,Gilbert,AZ,West,2020-02-28,General Practice,true
+5005,Brand E Chandler,Chandler,AZ,West,2018-11-07,Specialty,true
+5006,Brand E Peoria,Peoria,AZ,West,2021-04-16,Emergency,true
+5007,Brand E Glendale,Glendale,AZ,West,2019-08-25,General Practice,true
+5008,Brand E Phoenix North,Phoenix,AZ,West,2017-06-03,General Practice,true
+5009,Brand E Tucson,Tucson,AZ,West,2022-01-19,General Practice,true
+5010,Brand E Flagstaff,Flagstaff,AZ,West,2023-03-08,General Practice,true
+5011,Brand E Avondale,Avondale,AZ,West,2021-09-30,General Practice,true
+5012,Brand E Queen Creek,Queen Creek,AZ,West,2023-07-14,General Practice,false

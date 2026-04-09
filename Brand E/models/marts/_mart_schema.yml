@@ -1,0 +1,129 @@
+version: 2
+
+models:
+  - name: dim_clinics
+    description: "Veterinary clinic dimension — one row per clinic location"
+    config:
+      materialized: table
+    columns:
+      - name: clinic_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: clinic_name
+        data_tests:
+          - not_null
+      - name: region
+        data_tests:
+          - not_null
+      - name: clinic_type
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['General Practice', 'Emergency', 'Specialty']
+
+  - name: dim_pets
+    description: "Pet patient dimension — one row per pet"
+    config:
+      materialized: table
+    columns:
+      - name: pet_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: clinic_id
+        data_tests:
+          - not_null
+      - name: species
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['Dog', 'Cat', 'Bird', 'Rabbit', 'Reptile']
+      - name: wellness_plan
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['None', 'Basic Wellness', 'Premium Wellness']
+      - name: tenure_months
+        description: "Months since registration"
+
+  - name: dim_providers
+    description: "Veterinary provider dimension — one row per provider"
+    config:
+      materialized: table
+    columns:
+      - name: provider_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: clinic_id
+        data_tests:
+          - not_null
+      - name: provider_type
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['Veterinarian', 'Vet Technician', 'Specialist']
+
+  - name: fct_visits
+    description: "Visit-level fact table — one row per veterinary visit"
+    config:
+      materialized: table
+    columns:
+      - name: visit_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: pet_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_pets')
+                field: pet_id
+      - name: clinic_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_clinics')
+                field: clinic_id
+      - name: visit_date
+        data_tests:
+          - not_null
+      - name: species
+        description: "Animal species at time of visit"
+      - name: wellness_plan
+        description: "Pet's wellness plan at time of visit"
+      - name: wellness_plan_covered
+        description: "Dollar amount covered by wellness plan"
+      - name: net_revenue
+        description: "Total collected for completed visits"
+
+  - name: fct_revenue
+    description: "Monthly revenue fact per clinic — for FP&A reporting"
+    config:
+      materialized: table
+    columns:
+      - name: clinic_id
+        data_tests:
+          - not_null
+      - name: revenue_month
+        data_tests:
+          - not_null
+      - name: gross_charges
+        description: "Total billed in the month"
+      - name: avg_revenue_per_visit
+        description: "Average charge per completed visit"
+      - name: wellness_coverage_rate
+        description: "Fraction of charges covered by wellness plans"
+      - name: wellness_enrollment_rate
+        description: "Fraction of registered pets on a wellness plan"
+      - name: dog_visit_pct
+        description: "Fraction of visits from dogs"
+      - name: cat_visit_pct
+        description: "Fraction of visits from cats"

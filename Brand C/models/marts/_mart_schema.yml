@@ -1,0 +1,120 @@
+version: 2
+
+models:
+  - name: dim_clinics
+    description: "Clinic dimension — one row per clinic location"
+    config:
+      materialized: table
+    columns:
+      - name: clinic_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: clinic_name
+        data_tests:
+          - not_null
+      - name: region
+        data_tests:
+          - not_null
+          - accepted_values:
+                arguments:
+                  values: ['Midwest', 'Northeast', 'Southeast', 'Southwest', 'West']
+      - name: clinic_type
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['Urgent Care', 'Occupational Health', 'Combo']
+
+  - name: dim_patients
+    description: "Patient dimension — one row per urgent care patient"
+    config:
+      materialized: table
+    columns:
+      - name: patient_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: clinic_id
+        data_tests:
+          - not_null
+      - name: is_new_patient
+        description: "Whether this was the patient's first registration"
+      - name: tenure_months
+        description: "Months since registration date"
+
+  - name: dim_providers
+    description: "Provider dimension — one row per provider"
+    config:
+      materialized: table
+    columns:
+      - name: provider_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: clinic_id
+        data_tests:
+          - not_null
+      - name: provider_type
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['Physician', 'Nurse Practitioner', 'Physician Assistant', 'X-Ray Tech']
+
+  - name: fct_visits
+    description: "Visit-level fact table — one row per urgent care visit"
+    config:
+      materialized: table
+    columns:
+      - name: visit_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: patient_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_patients')
+                field: patient_id
+      - name: clinic_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_clinics')
+                field: clinic_id
+      - name: visit_date
+        data_tests:
+          - not_null
+      - name: wait_time_minutes
+        description: "Minutes from check-in to provider seen"
+      - name: total_visit_duration_minutes
+        description: "Total minutes from check-in to checkout"
+      - name: payer_name
+        description: "Insurance payer name"
+      - name: net_revenue
+        description: "Total collected for completed visits"
+
+  - name: fct_revenue
+    description: "Daily revenue fact per clinic — for FP&A and operational reporting"
+    config:
+      materialized: table
+    columns:
+      - name: clinic_id
+        data_tests:
+          - not_null
+      - name: revenue_date
+        data_tests:
+          - not_null
+      - name: avg_wait_time_minutes
+        description: "Average patient wait time for the day"
+      - name: net_revenue
+        description: "Insurance + patient payments collected"
+      - name: payer_mix_medicaid_pct
+        description: "Fraction of visits covered by Medicaid"
+      - name: payer_mix_self_pay_pct
+        description: "Fraction of visits that are self-pay"

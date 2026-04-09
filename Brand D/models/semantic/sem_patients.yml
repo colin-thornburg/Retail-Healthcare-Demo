@@ -1,0 +1,52 @@
+semantic_models:
+  - name: clients
+    defaults:
+      agg_time_dimension: first_visit_date
+    description: "Client dimension for Brand D"
+    model: ref('dim_clients')
+
+    entities:
+      - name: client
+        type: primary
+        expr: client_id
+      - name: studio
+        type: foreign
+        expr: studio_id
+
+    dimensions:
+      - name: first_visit_date
+        type: time
+        expr: "date_trunc(first_visit_date, DAY)"
+        type_params:
+          time_granularity: day
+      - name: membership_type
+        type: categorical
+      - name: gender
+        type: categorical
+      - name: is_active
+        type: categorical
+        expr: "cast(is_active as string)"
+      - name: age_group
+        type: categorical
+        expr: |
+          case
+            when age between 18 and 29 then '18-29'
+            when age between 30 and 44 then '30-44'
+            when age between 45 and 54 then '45-54'
+            else '55+'
+          end
+
+    measures:
+      - name: total_clients
+        agg: count
+        expr: client_id
+      - name: active_clients
+        agg: count
+        expr: client_id
+        agg_params:
+          where: "{{ Dimension('client__is_active') }} = 'true'"
+      - name: member_clients
+        agg: count
+        expr: client_id
+        agg_params:
+          where: "{{ Dimension('client__membership_type') }} != 'None'"

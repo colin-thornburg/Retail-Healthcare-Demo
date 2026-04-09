@@ -1,0 +1,121 @@
+version: 2
+
+models:
+  - name: dim_studios
+    description: "Studio dimension — one row per aesthetic studio location"
+    config:
+      materialized: table
+    columns:
+      - name: studio_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: studio_name
+        data_tests:
+          - not_null
+      - name: region
+        data_tests:
+          - not_null
+          - accepted_values:
+                arguments:
+                  values: ['Midwest', 'Northeast', 'Southeast', 'Southwest', 'West']
+
+  - name: dim_clients
+    description: "Client dimension — one row per aesthetic studio client"
+    config:
+      materialized: table
+    columns:
+      - name: client_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: studio_id
+        data_tests:
+          - not_null
+      - name: membership_type
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['None', 'Basic', 'Premium', 'VIP']
+      - name: tenure_months
+        description: "Months since first visit date"
+
+  - name: dim_providers
+    description: "Provider dimension — one row per aesthetic provider"
+    config:
+      materialized: table
+    columns:
+      - name: provider_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: studio_id
+        data_tests:
+          - not_null
+      - name: provider_type
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['Aesthetic Nurse', 'Dermatologist', 'Esthetician', 'Injector']
+
+  - name: fct_appointments
+    description: "Appointment fact table — one row per aesthetic appointment"
+    config:
+      materialized: table
+    columns:
+      - name: appointment_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: client_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_clients')
+                field: client_id
+      - name: studio_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_studios')
+                field: studio_id
+      - name: appointment_date
+        data_tests:
+          - not_null
+      - name: membership_type
+        description: "Client membership tier at time of appointment"
+      - name: is_repeat_client
+        description: "True if client had prior appointments"
+      - name: net_revenue
+        description: "Amount paid after membership discounts"
+      - name: appointment_status
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['Completed', 'Cancelled', 'No-Show', 'Rescheduled']
+
+  - name: fct_revenue
+    description: "Monthly revenue fact per studio — for FP&A reporting"
+    config:
+      materialized: table
+    columns:
+      - name: studio_id
+        data_tests:
+          - not_null
+      - name: revenue_month
+        data_tests:
+          - not_null
+      - name: total_net_revenue
+        description: "Net revenue after discounts"
+      - name: avg_revenue_per_completed_appt
+        description: "Average net revenue per completed appointment"
+      - name: membership_visit_pct
+        description: "Fraction of visits from members"
+      - name: client_retention_rate
+        description: "Fraction of clients who visited more than once in the month"

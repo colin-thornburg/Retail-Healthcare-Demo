@@ -1,0 +1,61 @@
+pet_id,pet_name,species,breed,date_of_birth,owner_name,owner_phone,clinic_id,wellness_plan,registration_date,is_active
+50001,Bella,Dog,Beagle,2018-07-02,Joshua Scott,(332) 305-7284,5001,Basic Wellness,2019-11-16,true
+50002,Max,Dog,Labrador Retriever,2018-05-06,Michelle Torres,(497) 666-9524,5001,Basic Wellness,2022-11-12,true
+50003,Luna,Dog,Golden Retriever,2018-11-04,Kevin Nguyen,(701) 567-4087,5001,None,2022-07-11,true
+50004,Charlie,Dog,Bulldog,2023-02-26,Carol Hill,(334) 416-1359,5001,None,2019-05-20,true
+50005,Lucy,Dog,Labrador Retriever,2019-03-17,Brian Flores,(855) 461-9761,5001,None,2024-08-29,false
+50006,Cooper,Dog,German Shepherd,2022-05-01,Amanda Green,(220) 249-2897,5002,Premium Wellness,2022-12-25,true
+50007,Daisy,Dog,Dachshund,2017-11-01,George Adams,(685) 918-3508,5002,None,2025-01-25,true
+50008,Milo,Dog,Rottweiler,2022-06-03,Melissa Nelson,(303) 878-9524,5002,Basic Wellness,2024-12-25,true
+50009,Sadie,Dog,Golden Retriever,2019-09-12,Timothy Baker,(307) 723-2928,5002,Basic Wellness,2019-04-12,true
+50010,Buddy,Dog,Yorkshire Terrier,2017-03-24,Deborah Hall,(823) 404-5308,5002,None,2022-01-06,true
+50011,Lola,Dog,Poodle,2016-10-18,Ronald Rivera,(240) 761-9132,5003,None,2023-05-23,true
+50012,Rocky,Dog,Labrador Retriever,2015-02-22,Stephanie Campbell,(887) 291-2809,5003,Premium Wellness,2019-09-03,false
+50013,Molly,Dog,Dachshund,2015-11-04,Edward Mitchell,(940) 940-2659,5003,Basic Wellness,2025-03-24,true
+50014,Bear,Dog,Poodle,2017-12-17,Rebecca Carter,(675) 251-2635,5003,None,2018-06-11,true
+50015,Zoey,Dog,Beagle,2023-12-28,Jason Roberts,(893) 520-7979,5003,None,2019-01-25,true
+50016,Duke,Dog,Labrador Retriever,2015-02-09,Sharon Smith,(341) 879-3793,5004,Basic Wellness,2022-01-04,true
+50017,Maggie,Dog,Boxer,2018-01-03,Jeffrey Johnson,(950) 295-7105,5004,Basic Wellness,2020-01-20,true
+50018,Jack,Dog,Rottweiler,2020-02-13,Laura Williams,(478) 594-8835,5004,Premium Wellness,2025-04-11,true
+50019,Chloe,Dog,Golden Retriever,2016-04-08,Ryan Brown,(335) 912-1960,5004,None,2019-03-01,true
+50020,Tucker,Dog,Boxer,2020-05-31,Cynthia Jones,(782) 894-8178,5004,None,2024-11-08,true
+50021,Penny,Dog,Beagle,2021-11-09,Jacob Garcia,(229) 900-3140,5005,Premium Wellness,2023-06-23,true
+50022,Oliver,Dog,Rottweiler,2019-12-11,Kathleen Miller,(247) 264-5286,5005,Basic Wellness,2018-02-20,true
+50023,Rosie,Dog,Dachshund,2023-08-10,Gary Davis,(961) 790-4669,5005,Basic Wellness,2023-10-28,true
+50024,Bentley,Dog,Boxer,2016-01-26,Amy Rodriguez,(643) 877-5072,5005,Premium Wellness,2021-11-17,true
+50025,Lily,Dog,Rottweiler,2016-08-31,Nicholas Martinez,(771) 827-1894,5005,None,2025-03-20,false
+50026,Zeus,Dog,Dachshund,2020-04-06,Anna Hernandez,(707) 369-2226,5006,Premium Wellness,2021-08-06,true
+50027,Gracie,Dog,Poodle,2015-07-26,Eric Lopez,(719) 428-7203,5006,Premium Wellness,2020-08-20,true
+50028,Buster,Dog,Yorkshire Terrier,2023-12-26,Shirley Gonzalez,(786) 658-2442,5006,Premium Wellness,2023-01-06,true
+50029,Sophie,Dog,Yorkshire Terrier,2023-05-11,Jonathan Wilson,(869) 218-2681,5006,Premium Wellness,2022-08-16,true
+50030,Toby,Dog,Dachshund,2015-01-01,Angela Anderson,(293) 818-5990,5006,None,2025-05-05,true
+50031,Nala,Dog,Beagle,2019-01-28,Stephen Thomas,(255) 428-8445,5007,Basic Wellness,2024-04-13,true
+50032,Finn,Dog,Boxer,2020-04-21,Helen Taylor,(933) 872-6952,5007,Premium Wellness,2019-04-13,true
+50033,Coco,Dog,Bulldog,2015-01-09,Larry Moore,(549) 563-5783,5007,Basic Wellness,2019-03-12,true
+50034,Rex,Dog,Golden Retriever,2020-07-09,Brenda Jackson,(343) 934-7704,5007,None,2020-11-07,true
+50035,Stella,Dog,Bulldog,2016-05-09,Justin Martin,(602) 420-8488,5007,None,2021-10-16,true
+50036,Murphy,Dog,Rottweiler,2015-07-10,James Lee,(848) 888-3018,5008,Premium Wellness,2023-02-17,true
+50037,Pepper,Dog,Dachshund,2016-07-05,Mary Perez,(710) 204-9689,5008,None,2024-03-16,false
+50038,Henry,Dog,Boxer,2020-06-01,Robert Thompson,(720) 999-3903,5008,None,2019-06-10,true
+50039,Ruby,Dog,Boxer,2021-10-18,Patricia White,(529) 716-7302,5008,Premium Wellness,2024-10-30,true
+50040,Leo,Dog,Bulldog,2018-01-25,John Harris,(607) 551-5819,5008,Premium Wellness,2019-07-01,true
+50041,Dixie,Dog,Boxer,2022-11-07,Jennifer Sanchez,(966) 724-5897,5009,Basic Wellness,2024-03-17,true
+50042,Riley,Dog,Bulldog,2017-05-08,Michael Clark,(839) 931-5760,5009,Basic Wellness,2019-06-28,false
+50043,Ginger,Dog,Golden Retriever,2020-08-25,Linda Ramirez,(755) 910-6281,5009,None,2021-12-13,true
+50044,Thor,Dog,Boxer,2021-05-26,William Lewis,(883) 927-7839,5009,Basic Wellness,2022-09-27,true
+50045,Willow,Dog,Dachshund,2016-03-12,Barbara Robinson,(225) 590-3381,5009,None,2018-08-20,true
+50046,Simba,Cat,Siamese,2018-03-19,David Walker,(899) 456-3399,5010,None,2021-04-23,true
+50047,Abby,Cat,British Shorthair,2015-05-13,Elizabeth Young,(567) 663-2679,5010,None,2025-04-04,true
+50048,Winston,Cat,Maine Coon,2020-09-23,Richard Allen,(912) 494-1769,5010,Premium Wellness,2022-05-07,true
+50049,Ellie,Cat,Bengal,2021-03-11,Susan King,(255) 213-5117,5010,None,2024-12-16,true
+50050,Scout,Cat,Sphynx,2024-04-22,Joseph Wright,(430) 848-7025,5010,None,2020-03-03,true
+50051,Bella,Cat,Siamese,2022-08-28,Jessica Scott,(276) 391-3847,5011,None,2022-03-26,true
+50052,Max,Cat,Ragdoll,2021-03-29,Thomas Torres,(470) 333-3636,5011,Basic Wellness,2018-01-24,true
+50053,Luna,Cat,Siamese,2015-06-13,Sarah Nguyen,(357) 530-1833,5011,Basic Wellness,2023-07-03,true
+50054,Charlie,Cat,British Shorthair,2019-01-06,Charles Hill,(274) 924-6207,5011,None,2020-01-24,true
+50055,Lucy,Cat,British Shorthair,2016-10-14,Karen Flores,(625) 756-9798,5011,Premium Wellness,2019-01-12,true
+50056,Cooper,Cat,Maine Coon,2022-06-10,Christopher Green,(539) 539-6911,5012,Basic Wellness,2020-06-13,false
+50057,Daisy,Cat,Abyssinian,2020-12-12,Lisa Adams,(686) 774-1144,5012,None,2021-11-18,true
+50058,Milo,Cat,Abyssinian,2021-12-19,Daniel Nelson,(449) 240-6258,5012,Premium Wellness,2019-04-10,true
+50059,Sadie,Cat,British Shorthair,2023-02-13,Nancy Baker,(489) 225-9468,5012,Basic Wellness,2023-10-08,true
+50060,Buddy,Cat,Sphynx,2020-06-16,Matthew Hall,(244) 503-4154,5012,Basic Wellness,2023-10-06,true

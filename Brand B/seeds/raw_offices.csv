@@ -1,0 +1,16 @@
+center_id,center_name,city,state,region,opened_date,center_type,is_active
+2001,Brand B Denver,Denver,CO,West,2017-03-20,Implant Center,true
+2002,Brand B Atlanta,Atlanta,GA,Southeast,2016-09-14,Implant Center,true
+2003,Brand B Chicago,Chicago,IL,Midwest,2015-11-05,Implant Center,true
+2004,Brand B Dallas,Dallas,TX,Southwest,2018-06-22,Implant Center,true
+2005,Brand B Houston,Houston,TX,Southwest,2019-02-10,Implant Center,true
+2006,Brand B Los Angeles,Los Angeles,CA,West,2017-07-30,Implant Center,true
+2007,Brand B Phoenix,Phoenix,AZ,West,2020-01-15,Implant Center,true
+2008,Brand B Seattle,Seattle,WA,West,2018-04-28,Implant Center,true
+2009,Brand B Philadelphia,Philadelphia,PA,Northeast,2016-12-08,Implant Center,true
+2010,Brand B Boston,Boston,MA,Northeast,2019-05-17,Implant Center,true
+2011,Brand B Miami,Miami,FL,Southeast,2017-10-03,Implant Center,true
+2012,Brand B Minneapolis,Minneapolis,MN,Midwest,2021-03-22,Implant Center,true
+2013,Brand B Charlotte,Charlotte,NC,Southeast,2020-08-14,Implant Center,true
+2014,Brand B San Antonio,San Antonio,TX,Southwest,2022-01-10,Implant Center,false
+2015,Brand B Las Vegas,Las Vegas,NV,West,2021-11-28,Implant Center,true

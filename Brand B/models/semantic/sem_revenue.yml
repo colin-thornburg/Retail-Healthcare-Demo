@@ -1,0 +1,38 @@
+semantic_models:
+  - name: monthly_revenue
+    defaults:
+      agg_time_dimension: revenue_month
+    description: |
+      Monthly revenue aggregated per implant center. Primary surface for FP&A reporting.
+    model: ref('fct_revenue')
+
+    entities:
+      - name: center_revenue
+        type: primary
+        expr: "concat(cast(center_id as string), '-', cast(revenue_month as string))"
+      - name: center
+        type: foreign
+        expr: center_id
+
+    dimensions:
+      - name: revenue_month
+        type: time
+        expr: "date_trunc(revenue_month, DAY)"
+        type_params:
+          time_granularity: month
+      - name: region
+        type: categorical
+
+    measures:
+      - name: gross_revenue
+        agg: sum
+        expr: gross_revenue
+      - name: total_consultations
+        agg: sum
+        expr: total_consultations
+      - name: total_surgeries
+        agg: sum
+        expr: total_surgeries
+      - name: net_revenue
+        agg: sum
+        expr: gross_revenue

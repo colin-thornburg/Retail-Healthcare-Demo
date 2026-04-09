@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: int_appointments_enriched
+    description: >
+      Appointment-level data enriched with client, provider, studio, and billing details.
+      Includes repeat-client flag derived from prior appointment history.
+      Grain: one row per appointment_id.
+    columns:
+      - name: appointment_id
+        description: "Primary key — one row per appointment"
+        data_tests:
+          - unique
+          - not_null
+      - name: client_id
+        description: "Client who booked the appointment"
+        data_tests:
+          - not_null
+      - name: studio_id
+        description: "Studio where the appointment took place"
+        data_tests:
+          - not_null
+      - name: appointment_date
+        description: "Date of the appointment"
+        data_tests:
+          - not_null
+      - name: membership_type
+        description: "Client membership tier at time of visit"
+      - name: net_revenue
+        description: "Amount paid after membership discounts"
+      - name: is_repeat_client
+        description: "True if client had at least one prior appointment"
+      - name: prior_appointment_count
+        description: "Number of appointments before this one for the same client"
+
+  - name: int_studio_monthly_summary
+    description: >
+      Monthly aggregated metrics per studio including revenue, service mix, and retention.
+      Grain: one row per studio_id + visit_month.
+    columns:
+      - name: studio_id
+        description: "Studio identifier"
+        data_tests:
+          - not_null
+      - name: visit_month
+        description: "First day of the month (date_trunc)"
+        data_tests:
+          - not_null
+      - name: total_net_revenue
+        description: "Total revenue after discounts"
+      - name: avg_revenue_per_completed_appt
+        description: "Average net revenue for completed appointments"
+      - name: retention_rate
+        description: "Fraction of clients who visited more than once in the month"

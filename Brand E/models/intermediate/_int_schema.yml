@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: int_visits_enriched
+    description: >
+      Visit-level data enriched with pet, provider, clinic, and billing details.
+      Includes wellness plan coverage metrics.
+      Grain: one row per visit_id.
+    columns:
+      - name: visit_id
+        description: "Primary key — one row per visit"
+        data_tests:
+          - unique
+          - not_null
+      - name: pet_id
+        description: "Pet patient who attended the visit"
+        data_tests:
+          - not_null
+      - name: clinic_id
+        description: "Clinic where the visit occurred"
+        data_tests:
+          - not_null
+      - name: visit_date
+        description: "Date of the visit"
+        data_tests:
+          - not_null
+      - name: species
+        description: "Animal species (Dog, Cat, Bird, Rabbit, Reptile)"
+      - name: wellness_plan
+        description: "Pet's enrolled wellness plan"
+      - name: wellness_plan_covered
+        description: "Dollar amount covered by the wellness plan"
+      - name: wellness_coverage_pct
+        description: "Fraction of charge covered by wellness plan"
+      - name: owner_paid
+        description: "Amount paid by the pet owner"
+
+  - name: int_clinic_monthly_summary
+    description: >
+      Monthly aggregated metrics per clinic including species mix, revenue, and wellness enrollment.
+      Grain: one row per clinic_id + visit_month.
+    columns:
+      - name: clinic_id
+        description: "Clinic identifier"
+        data_tests:
+          - not_null
+      - name: visit_month
+        description: "First day of the month (date_trunc)"
+        data_tests:
+          - not_null
+      - name: total_visits
+        description: "Total visits in the month"
+      - name: avg_revenue_per_visit
+        description: "Average charge per completed visit"
+      - name: wellness_coverage_rate
+        description: "Fraction of total charges covered by wellness plans"
+      - name: wellness_enrollment_rate
+        description: "Fraction of registered pets enrolled in a wellness plan"

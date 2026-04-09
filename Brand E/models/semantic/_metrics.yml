@@ -1,0 +1,143 @@
+metrics:
+
+  # ── Revenue ──────────────────────────────────────────────────────────
+  - name: net_revenue
+    description: "Total owner-paid revenue (excluding wellness plan coverage)"
+    type: simple
+    type_params:
+      measure:
+        name: total_net_revenue
+        fill_nulls_with: 0
+
+  - name: total_net_revenue
+    description: "Alias metric for net revenue"
+    type: simple
+    type_params:
+      measure:
+        name: total_net_revenue
+        fill_nulls_with: 0
+
+  - name: avg_revenue_per_pet_visit
+    description: "Average charge per completed pet visit"
+    type: derived
+    type_params:
+      expr: "safe_divide(total_net_revenue, completed_visits)"
+      metrics:
+        - name: total_net_revenue
+        - name: completed_visits
+
+  - name: cumulative_revenue
+    description: "Running total of net revenue"
+    type: cumulative
+    type_params:
+      measure:
+        name: total_net_revenue
+        fill_nulls_with: 0
+      window: 1 month
+
+  - name: revenue_mom_growth
+    description: "Month-over-month revenue growth rate"
+    type: derived
+    type_params:
+      expr: "safe_divide(current_revenue - prior_revenue, prior_revenue)"
+      metrics:
+        - name: total_net_revenue
+          alias: current_revenue
+        - name: total_net_revenue
+          offset_window: 1 month
+          alias: prior_revenue
+
+  # ── Operational ───────────────────────────────────────────────────────
+  - name: total_visits
+    description: "Total number of veterinary visits"
+    type: simple
+    type_params:
+      measure:
+        name: total_visits
+        fill_nulls_with: 0
+
+  - name: completed_visits
+    description: "Count of completed visits"
+    type: simple
+    type_params:
+      measure:
+        name: completed_visits
+        fill_nulls_with: 0
+
+  - name: visit_completion_rate
+    description: "Percentage of visits completed"
+    type: derived
+    type_params:
+      expr: "safe_divide(completed_visits, total_visits)"
+      metrics:
+        - name: completed_visits
+        - name: total_visits
+
+  - name: unique_pets_seen
+    description: "Count of distinct pets seen"
+    type: simple
+    type_params:
+      measure:
+        name: unique_pets
+        fill_nulls_with: 0
+
+  # ── Wellness Plan ─────────────────────────────────────────────────────
+  - name: wellness_plan_enrollment_rate
+    description: "Fraction of registered pets enrolled in a wellness plan"
+    type: derived
+    type_params:
+      expr: "safe_divide(wellness_enrolled_pets, total_pets)"
+      metrics:
+        - name: wellness_enrolled_pets
+        - name: total_pets
+
+  - name: total_pets
+    description: "Total registered pets"
+    type: simple
+    type_params:
+      measure:
+        name: total_pets
+        fill_nulls_with: 0
+
+  - name: wellness_enrolled_pets
+    description: "Count of pets on a wellness plan"
+    type: simple
+    type_params:
+      measure:
+        name: wellness_enrolled_pets
+        fill_nulls_with: 0
+
+  # ── Species Mix ───────────────────────────────────────────────────────
+  - name: species_mix_dog_pct
+    description: "Fraction of visits from dogs"
+    type: derived
+    type_params:
+      expr: "safe_divide(dog_visits, total_visits)"
+      metrics:
+        - name: dog_visits
+        - name: total_visits
+
+  - name: species_mix_cat_pct
+    description: "Fraction of visits from cats"
+    type: derived
+    type_params:
+      expr: "safe_divide(cat_visits, total_visits)"
+      metrics:
+        - name: cat_visits
+        - name: total_visits
+
+  - name: dog_visits
+    description: "Total visits from dogs"
+    type: simple
+    type_params:
+      measure:
+        name: unique_pets
+        fill_nulls_with: 0
+
+  - name: cat_visits
+    description: "Total visits from cats"
+    type: simple
+    type_params:
+      measure:
+        name: unique_pets
+        fill_nulls_with: 0

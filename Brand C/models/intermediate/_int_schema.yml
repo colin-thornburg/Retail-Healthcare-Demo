@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: int_visits_enriched
+    description: >
+      Visit-level data enriched with patient, provider, clinic, and billing details.
+      Includes wait time and total visit duration metrics.
+      Grain: one row per visit_id.
+    columns:
+      - name: visit_id
+        description: "Primary key — one row per visit"
+        data_tests:
+          - unique
+          - not_null
+      - name: patient_id
+        description: "Patient who attended the visit"
+        data_tests:
+          - not_null
+      - name: clinic_id
+        description: "Clinic where the visit occurred"
+        data_tests:
+          - not_null
+      - name: visit_date
+        description: "Date of the visit"
+        data_tests:
+          - not_null
+      - name: wait_time_minutes
+        description: "Minutes from check-in to being seen by a provider"
+      - name: total_visit_minutes
+        description: "Total minutes from check-in to checkout"
+      - name: is_new_patient
+        description: "Whether this was the patient's first visit"
+      - name: payer_name
+        description: "Insurance payer name"
+
+  - name: int_clinic_daily_summary
+    description: >
+      Daily aggregated metrics per clinic including wait times and payer mix.
+      Grain: one row per clinic_id + visit_date.
+    columns:
+      - name: clinic_id
+        description: "Clinic identifier"
+        data_tests:
+          - not_null
+      - name: visit_date
+        description: "Date of aggregation"
+        data_tests:
+          - not_null
+      - name: total_visits
+        description: "Total visits scheduled on this date"
+      - name: avg_wait_time_minutes
+        description: "Average wait time for completed visits"
+      - name: max_wait_time_minutes
+        description: "Longest wait time recorded for the day"
+      - name: new_patient_visits
+        description: "Count of visits from new patients"
+      - name: total_charges
+        description: "Sum of all billed amounts"

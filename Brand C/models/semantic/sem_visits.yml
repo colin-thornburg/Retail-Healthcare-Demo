@@ -1,0 +1,75 @@
+semantic_models:
+  - name: visits
+    defaults:
+      agg_time_dimension: visit_date
+    description: |
+      Visit-level fact data for Brand C urgent care. Each row is a patient visit
+      including wait time metrics and billing.
+    model: ref('fct_visits')
+
+    entities:
+      - name: visit
+        type: primary
+        expr: visit_id
+      - name: patient
+        type: foreign
+        expr: patient_id
+      - name: provider
+        type: foreign
+        expr: provider_id
+      - name: clinic
+        type: foreign
+        expr: clinic_id
+
+    dimensions:
+      - name: visit_date
+        type: time
+        expr: "date_trunc(visit_date, DAY)"
+        type_params:
+          time_granularity: day
+      - name: visit_type
+        type: categorical
+      - name: visit_status
+        type: categorical
+      - name: is_completed
+        type: categorical
+        expr: "cast(is_completed as string)"
+      - name: is_new_patient
+        type: categorical
+        expr: "cast(is_new_patient as string)"
+      - name: payer_name
+        type: categorical
+      - name: payment_status
+        type: categorical
+
+    measures:
+      - name: total_visits
+        agg: count
+        expr: visit_id
+      - name: completed_visits
+        agg: count
+        expr: visit_id
+        agg_params:
+          where: "{{ Dimension('visit__is_completed') }} = 'true'"
+      - name: new_patient_visits
+        agg: count
+        expr: visit_id
+        agg_params:
+          where: "{{ Dimension('visit__is_new_patient') }} = 'true'"
+      - name: total_charges
+        agg: sum
+        expr: charge_amount
+      - name: total_net_revenue
+        agg: sum
+        expr: net_revenue
+      - name: avg_wait_time_minutes
+        description: "Average patient wait time in minutes"
+        agg: average
+        expr: wait_time_minutes
+      - name: avg_visit_duration_minutes
+        description: "Average total visit duration in minutes"
+        agg: average
+        expr: total_visit_duration_minutes
+      - name: unique_patients
+        agg: count_distinct
+        expr: patient_id

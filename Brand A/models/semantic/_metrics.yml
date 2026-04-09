@@ -1,0 +1,123 @@
+metrics:
+
+  # ── Revenue ──────────────────────────────────────────────────────────
+  - name: net_revenue
+    description: "Total net revenue collected (insurance + patient payments)"
+    type: simple
+    type_params:
+      measure:
+        name: total_net_revenue
+        fill_nulls_with: 0
+
+  - name: gross_charges
+    description: "Total gross charges billed"
+    type: simple
+    type_params:
+      measure:
+        name: total_charges
+        fill_nulls_with: 0
+
+  - name: total_net_revenue
+    description: "Alias metric wrapper for net revenue measure"
+    type: simple
+    type_params:
+      measure:
+        name: total_net_revenue
+        fill_nulls_with: 0
+
+  - name: avg_revenue_per_visit
+    description: "Average net revenue per completed visit"
+    type: derived
+    type_params:
+      expr: "safe_divide(total_net_revenue, completed_visits)"
+      metrics:
+        - name: total_net_revenue
+        - name: completed_visits
+
+  - name: cumulative_revenue
+    description: "Running total of net revenue — useful for FP&A trending"
+    type: cumulative
+    type_params:
+      measure:
+        name: total_net_revenue
+        fill_nulls_with: 0
+      window: 1 month
+
+  - name: revenue_mom_growth
+    description: "Month-over-month revenue growth rate"
+    type: derived
+    type_params:
+      expr: "safe_divide(current_revenue - prior_revenue, prior_revenue)"
+      metrics:
+        - name: total_net_revenue
+          alias: current_revenue
+        - name: total_net_revenue
+          offset_window: 1 month
+          alias: prior_revenue
+
+  # ── Operational ───────────────────────────────────────────────────────
+  - name: total_visits
+    description: "Total number of visits across all statuses"
+    type: simple
+    type_params:
+      measure:
+        name: total_visits
+        fill_nulls_with: 0
+
+  - name: completed_visits
+    description: "Count of completed visits"
+    type: simple
+    type_params:
+      measure:
+        name: completed_visits
+        fill_nulls_with: 0
+
+  - name: visit_completion_rate
+    description: "Percentage of visits that were completed"
+    type: derived
+    type_params:
+      expr: "safe_divide(completed_visits, total_visits)"
+      metrics:
+        - name: completed_visits
+        - name: total_visits
+
+  - name: treatments_accepted
+    description: "Count of visits where treatment was accepted"
+    type: simple
+    type_params:
+      measure:
+        name: treatments_accepted_count
+        fill_nulls_with: 0
+
+  - name: treatment_acceptance_rate
+    description: "Rate at which patients accept recommended treatments — key operational KPI"
+    type: derived
+    type_params:
+      expr: "safe_divide(treatments_accepted, total_visits)"
+      metrics:
+        - name: treatments_accepted
+        - name: total_visits
+
+  - name: unique_patients_seen
+    description: "Count of distinct patients seen"
+    type: simple
+    type_params:
+      measure:
+        name: unique_patients
+        fill_nulls_with: 0
+
+  # ── Patient ───────────────────────────────────────────────────────────
+  - name: active_patient_count
+    description: "Count of currently active patients"
+    type: simple
+    type_params:
+      measure:
+        name: active_patients
+        fill_nulls_with: 0
+
+  - name: avg_patient_tenure
+    description: "Average tenure of patients in months"
+    type: simple
+    type_params:
+      measure:
+        name: avg_patient_tenure_months

@@ -1,0 +1,11 @@
+provider_id,provider_name,provider_type,clinic_id,hire_date,is_active
+9001,Dr. Allison Reed,Veterinarian,5001,2018-04-15,true
+9002,Carlos Mendez,Vet Technician,5001,2019-02-10,true
+9003,Dr. Hannah Park,Veterinarian,5002,2017-10-28,true
+9004,Dr. Brian Foster,Specialist,5003,2019-07-22,true
+9005,Tiffany Nguyen,Vet Technician,5004,2020-03-05,true
+9006,Dr. Scott Campbell,Veterinarian,5005,2018-08-19,true
+9007,Dr. Grace Kim,Veterinarian,5006,2021-05-14,true
+9008,Marco Rivera,Vet Technician,5007,2019-11-30,true
+9009,Dr. Amanda Price,Veterinarian,5008,2017-07-07,true
+9010,Dr. Nathan Hughes,Specialist,5009,2022-02-21,false

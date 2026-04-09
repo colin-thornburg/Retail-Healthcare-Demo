@@ -1,0 +1,113 @@
+version: 2
+
+models:
+  - name: dim_centers
+    description: "Implant center dimension — one row per center location"
+    config:
+      materialized: table
+    columns:
+      - name: center_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: center_name
+        data_tests:
+          - not_null
+      - name: region
+        data_tests:
+          - not_null
+          - accepted_values:
+                arguments:
+                  values: ['Midwest', 'Northeast', 'Southeast', 'Southwest', 'West']
+
+  - name: dim_patients
+    description: "Patient dimension — one row per implant patient"
+    config:
+      materialized: table
+    columns:
+      - name: patient_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: center_id
+        data_tests:
+          - not_null
+      - name: referral_source
+        description: "How the patient found Brand B"
+
+  - name: dim_providers
+    description: "Provider dimension — one row per provider"
+    config:
+      materialized: table
+    columns:
+      - name: provider_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: center_id
+        data_tests:
+          - not_null
+      - name: provider_type
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['Prosthodontist', 'Oral Surgeon', 'Dental Technician']
+
+  - name: fct_cases
+    description: "Implant case fact table — one row per case (implant journey)"
+    config:
+      materialized: table
+    columns:
+      - name: case_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: patient_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_patients')
+                field: patient_id
+      - name: center_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_centers')
+                field: center_id
+      - name: case_status
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['Completed', 'Active', 'Lost']
+      - name: is_converted
+        description: "True if consultation resulted in a scheduled surgery"
+      - name: total_case_revenue
+        description: "Sum of all charges across the implant case"
+      - name: days_consultation_to_surgery
+        description: "Calendar days from first consultation to surgery"
+
+  - name: fct_revenue
+    description: "Monthly revenue fact per center — for FP&A reporting"
+    config:
+      materialized: table
+    columns:
+      - name: center_id
+        data_tests:
+          - not_null
+      - name: revenue_month
+        data_tests:
+          - not_null
+      - name: gross_revenue
+        description: "Total charges in the month"
+      - name: avg_case_value
+        description: "Gross revenue divided by completed surgeries"
+      - name: consultation_to_surgery_rate
+        description: "Fraction of consultations that converted to surgery"
+      - name: financing_pct
+        description: "Fraction of visits where financing was used"

@@ -1,0 +1,143 @@
+version: 2
+
+models:
+  - name: stg_offices
+    description: "Cleaned and typed studio location data for Brand D"
+    columns:
+      - name: studio_id
+        description: "Primary key for studio"
+        data_tests:
+          - unique
+          - not_null
+      - name: studio_name
+        description: "Display name of the studio"
+        data_tests:
+          - not_null
+      - name: is_active
+        description: "Whether the studio is currently active"
+
+  - name: stg_patients
+    description: "Cleaned and typed client data for Brand D"
+    columns:
+      - name: client_id
+        description: "Primary key for client"
+        data_tests:
+          - unique
+          - not_null
+      - name: studio_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: studio_id
+      - name: age
+        description: "Calculated age in years"
+      - name: membership_type
+        description: "Client membership tier (None, Basic, Premium, VIP)"
+      - name: first_visit_date
+        description: "Date of first studio visit"
+      - name: is_active
+        description: "Whether the client record is active"
+
+  - name: stg_providers
+    description: "Cleaned and typed provider data for Brand D"
+    columns:
+      - name: provider_id
+        description: "Primary key for provider"
+        data_tests:
+          - unique
+          - not_null
+      - name: studio_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: studio_id
+      - name: provider_type
+        description: "Type of provider (Dermatologist, Aesthetic Nurse, Esthetician, Injector)"
+      - name: is_active
+        description: "Whether the provider is currently active"
+
+  - name: stg_visits
+    description: "Cleaned and typed appointment data for Brand D"
+    columns:
+      - name: appointment_id
+        description: "Primary key for appointment"
+        data_tests:
+          - unique
+          - not_null
+      - name: client_id
+        description: "Foreign key to stg_patients"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_patients')
+                  field: client_id
+      - name: provider_id
+        description: "Foreign key to stg_providers"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_providers')
+                  field: provider_id
+      - name: studio_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: studio_id
+      - name: appointment_date
+        description: "Date of the appointment"
+        data_tests:
+          - not_null
+      - name: service_type
+        description: "Type of aesthetic service"
+      - name: appointment_status
+        description: "Status of the appointment"
+      - name: is_completed
+        description: "Derived boolean: true when appointment_status = Completed"
+
+  - name: stg_billing
+    description: "Cleaned and typed billing data for Brand D"
+    columns:
+      - name: billing_id
+        description: "Primary key for billing record"
+        data_tests:
+          - unique
+          - not_null
+      - name: appointment_id
+        description: "Foreign key to stg_visits"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_visits')
+                  field: appointment_id
+      - name: client_id
+        description: "Foreign key to stg_patients"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_patients')
+                  field: client_id
+      - name: charge_amount
+        description: "Total amount billed before discounts"
+      - name: discount_amount
+        description: "Membership or promotional discount applied"
+      - name: amount_paid
+        description: "Final amount paid after discounts"
+      - name: discount_pct
+        description: "Fraction of charge discounted"
+      - name: payment_method
+        description: "Method of payment (Credit Card, Financing, Gift Card, Membership Credit)"
+      - name: payment_status
+        description: "Status of payment"

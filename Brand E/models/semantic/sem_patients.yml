@@ -1,0 +1,51 @@
+semantic_models:
+  - name: pets
+    defaults:
+      agg_time_dimension: registration_date
+    description: "Pet patient dimension for Brand E"
+    model: ref('dim_pets')
+
+    entities:
+      - name: pet
+        type: primary
+        expr: pet_id
+      - name: clinic
+        type: foreign
+        expr: clinic_id
+
+    dimensions:
+      - name: registration_date
+        type: time
+        expr: "date_trunc(registration_date, DAY)"
+        type_params:
+          time_granularity: day
+      - name: species
+        type: categorical
+      - name: wellness_plan
+        type: categorical
+      - name: is_active
+        type: categorical
+        expr: "cast(is_active as string)"
+      - name: age_bucket
+        type: categorical
+        expr: |
+          case
+            when age_years < 2 then 'Puppy/Kitten'
+            when age_years between 2 and 7 then 'Adult'
+            else 'Senior'
+          end
+
+    measures:
+      - name: total_pets
+        agg: count
+        expr: pet_id
+      - name: active_pets
+        agg: count
+        expr: pet_id
+        agg_params:
+          where: "{{ Dimension('pet__is_active') }} = 'true'"
+      - name: wellness_enrolled_pets
+        agg: count
+        expr: pet_id
+        agg_params:
+          where: "{{ Dimension('pet__wellness_plan') }} != 'None'"

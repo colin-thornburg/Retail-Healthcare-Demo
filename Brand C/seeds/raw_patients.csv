@@ -1,0 +1,81 @@
+patient_id,first_name,last_name,date_of_birth,gender,clinic_id,insurance_type,is_new_patient,registration_date
+30001,Jennifer,Thomas,1952-05-08,Other,3001,Medicaid,false,2023-02-15
+30002,Michael,Taylor,1962-05-24,M,3001,PPO,false,2025-08-06
+30003,Linda,Moore,1986-06-13,F,3001,Self-Pay,true,2022-12-02
+30004,William,Jackson,2003-02-28,F,3001,HMO,false,2023-03-15
+30005,Barbara,Martin,2002-04-05,F,3002,HMO,true,2020-10-30
+30006,David,Lee,1980-07-21,F,3002,Workers Comp,false,2020-12-25
+30007,Elizabeth,Perez,2012-09-17,M,3002,Workers Comp,true,2020-09-22
+30008,Richard,Thompson,1989-05-05,Other,3002,Medicaid,false,2021-10-07
+30009,Susan,White,2003-11-10,F,3003,Medicaid,false,2021-05-12
+30010,Joseph,Harris,1958-01-11,F,3003,HMO,false,2020-04-17
+30011,Jessica,Sanchez,1972-05-17,Other,3003,Self-Pay,false,2021-06-15
+30012,Thomas,Clark,1994-11-25,M,3003,PPO,true,2025-05-14
+30013,Sarah,Ramirez,1987-02-28,F,3004,Medicare,false,2020-10-29
+30014,Charles,Lewis,1951-03-30,M,3004,Workers Comp,true,2025-03-23
+30015,Karen,Robinson,2001-01-05,Other,3004,Medicaid,true,2022-01-15
+30016,Christopher,Walker,2008-11-17,F,3004,Medicare,false,2020-08-14
+30017,Lisa,Young,2014-08-03,M,3005,Self-Pay,true,2021-11-05
+30018,Daniel,Allen,1954-07-13,M,3005,Workers Comp,true,2025-10-26
+30019,Nancy,King,1965-06-25,M,3005,Medicaid,true,2023-01-29
+30020,Matthew,Wright,1951-03-25,M,3005,Self-Pay,false,2025-08-20
+30021,Betty,Scott,1997-07-03,F,3006,Self-Pay,false,2021-09-23
+30022,Anthony,Torres,1955-05-11,Other,3006,Workers Comp,false,2023-10-14
+30023,Margaret,Nguyen,2015-08-03,Other,3006,PPO,false,2020-04-26
+30024,Mark,Hill,1947-04-15,M,3006,Workers Comp,false,2022-12-20
+30025,Sandra,Flores,1998-06-01,F,3007,Self-Pay,false,2020-05-04
+30026,Donald,Green,1984-09-05,Other,3007,Medicaid,false,2023-05-22
+30027,Ashley,Adams,1983-04-30,F,3007,Workers Comp,false,2025-01-31
+30028,Steven,Nelson,1946-07-19,M,3007,HMO,false,2025-06-06
+30029,Dorothy,Baker,1981-08-31,F,3008,Medicaid,false,2023-07-04
+30030,Paul,Hall,2017-04-15,M,3008,Workers Comp,false,2023-11-15
+30031,Kimberly,Rivera,1975-10-09,F,3008,Medicaid,false,2021-03-10
+30032,Andrew,Campbell,1968-08-17,F,3008,Medicare,true,2025-01-15
+30033,Emily,Mitchell,1962-03-29,F,3009,PPO,true,2024-04-22
+30034,Kenneth,Carter,2017-07-11,Other,3009,Medicare,true,2021-10-16
+30035,Donna,Roberts,2012-12-24,M,3009,Self-Pay,false,2022-02-16
+30036,Joshua,Smith,2008-06-17,F,3009,Medicare,false,2025-03-27
+30037,Michelle,Johnson,1984-09-29,M,3010,Medicare,true,2024-05-29
+30038,Kevin,Williams,1985-05-06,F,3010,HMO,true,2023-12-16
+30039,Carol,Brown,1944-05-13,M,3010,Medicaid,false,2025-04-11
+30040,Brian,Jones,1965-08-20,Other,3010,PPO,false,2024-10-31
+30041,Amanda,Garcia,1952-01-06,M,3011,Workers Comp,false,2024-07-09
+30042,George,Miller,1972-10-30,M,3011,Medicare,true,2022-03-08
+30043,Melissa,Davis,1972-07-10,Other,3011,Medicaid,true,2025-08-27
+30044,Timothy,Rodriguez,1980-05-27,Other,3011,Medicaid,false,2021-05-01
+30045,Deborah,Martinez,1951-07-18,M,3012,Medicare,false,2023-10-20
+30046,Ronald,Hernandez,1990-01-17,M,3012,HMO,true,2025-09-16
+30047,Stephanie,Lopez,1976-01-04,Other,3012,PPO,true,2021-07-15
+30048,Edward,Gonzalez,2004-01-07,M,3012,Medicare,false,2021-09-02
+30049,Rebecca,Wilson,1994-05-22,Other,3013,HMO,true,2023-07-28
+30050,Jason,Anderson,1954-07-30,F,3013,Self-Pay,false,2023-05-10
+30051,Sharon,Thomas,1993-04-07,M,3013,Self-Pay,false,2025-06-29
+30052,Jeffrey,Taylor,2003-08-01,Other,3013,Medicaid,false,2020-03-09
+30053,Laura,Moore,1973-01-17,M,3014,Workers Comp,true,2024-09-02
+30054,Ryan,Jackson,1992-05-13,M,3014,Workers Comp,false,2020-04-19
+30055,Cynthia,Martin,1993-07-20,F,3014,Medicaid,false,2022-07-21
+30056,Jacob,Lee,2004-09-19,M,3014,Self-Pay,false,2025-11-17
+30057,Kathleen,Perez,1996-06-06,Other,3015,Medicare,true,2022-09-19
+30058,Gary,Thompson,1942-10-31,Other,3015,Workers Comp,true,2020-03-18
+30059,Amy,White,1979-07-26,M,3015,Medicare,true,2022-04-15
+30060,Nicholas,Harris,1976-10-25,Other,3015,Self-Pay,false,2020-09-12
+30061,Anna,Sanchez,2003-04-26,F,3016,Self-Pay,true,2023-08-24
+30062,Eric,Clark,1999-05-30,F,3016,Self-Pay,false,2021-12-10
+30063,Shirley,Ramirez,1981-03-28,Other,3016,Medicaid,false,2022-12-18
+30064,Jonathan,Lewis,1994-09-24,F,3016,HMO,false,2023-02-16
+30065,Angela,Robinson,1990-01-25,M,3017,HMO,false,2023-05-04
+30066,Stephen,Walker,2009-03-08,M,3017,Workers Comp,true,2025-06-25
+30067,Helen,Young,1968-06-10,F,3017,Medicaid,false,2023-01-25
+30068,Larry,Allen,1965-10-26,M,3017,Self-Pay,false,2024-04-04
+30069,Brenda,King,1975-05-25,M,3018,HMO,true,2023-03-24
+30070,Justin,Wright,2004-01-25,M,3018,Medicaid,false,2022-11-16
+30071,James,Scott,2007-01-17,F,3018,HMO,true,2023-01-15
+30072,Mary,Torres,1990-06-03,M,3018,HMO,true,2022-09-07
+30073,Robert,Nguyen,1961-10-01,M,3019,Workers Comp,false,2022-07-13
+30074,Patricia,Hill,1997-03-26,F,3019,PPO,true,2023-09-14
+30075,John,Flores,2004-05-10,F,3019,PPO,false,2021-07-17
+30076,Jennifer,Green,1940-06-18,Other,3019,HMO,false,2025-05-02
+30077,Michael,Adams,1982-11-01,F,3020,Medicaid,true,2020-08-30
+30078,Linda,Nelson,2008-12-18,M,3020,Workers Comp,false,2020-06-01
+30079,William,Baker,1955-09-15,F,3020,HMO,false,2020-05-28
+30080,Barbara,Hall,2015-01-07,F,3020,Medicare,true,2023-03-31

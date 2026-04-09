@@ -1,0 +1,41 @@
+semantic_models:
+  - name: monthly_revenue
+    defaults:
+      agg_time_dimension: revenue_month
+    description: |
+      Monthly revenue aggregated per studio. Primary surface for FP&A reporting.
+    model: ref('fct_revenue')
+
+    entities:
+      - name: studio_revenue
+        type: primary
+        expr: "concat(cast(studio_id as string), '-', cast(revenue_month as string))"
+      - name: studio
+        type: foreign
+        expr: studio_id
+
+    dimensions:
+      - name: revenue_month
+        type: time
+        expr: "date_trunc(revenue_month, DAY)"
+        type_params:
+          time_granularity: month
+      - name: region
+        type: categorical
+
+    measures:
+      - name: gross_revenue
+        agg: sum
+        expr: total_gross_revenue
+      - name: total_discounts_sum
+        agg: sum
+        expr: total_discounts
+      - name: net_revenue
+        agg: sum
+        expr: total_net_revenue
+      - name: total_appointments_count
+        agg: sum
+        expr: total_appointments
+      - name: unique_clients_count
+        agg: sum
+        expr: unique_clients

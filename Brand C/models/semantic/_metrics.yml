@@ -1,0 +1,121 @@
+metrics:
+
+  # ── Revenue ──────────────────────────────────────────────────────────
+  - name: net_revenue
+    description: "Total net revenue collected"
+    type: simple
+    type_params:
+      measure:
+        name: total_net_revenue
+        fill_nulls_with: 0
+
+  - name: total_net_revenue
+    description: "Alias metric for net revenue"
+    type: simple
+    type_params:
+      measure:
+        name: total_net_revenue
+        fill_nulls_with: 0
+
+  - name: avg_revenue_per_visit
+    description: "Average net revenue per completed visit"
+    type: derived
+    type_params:
+      expr: "safe_divide(total_net_revenue, completed_visits)"
+      metrics:
+        - name: total_net_revenue
+        - name: completed_visits
+
+  - name: cumulative_revenue
+    description: "Running total of net revenue"
+    type: cumulative
+    type_params:
+      measure:
+        name: total_net_revenue
+        fill_nulls_with: 0
+      window: 1 month
+
+  - name: revenue_mom_growth
+    description: "Month-over-month revenue growth rate"
+    type: derived
+    type_params:
+      expr: "safe_divide(current_revenue - prior_revenue, prior_revenue)"
+      metrics:
+        - name: total_net_revenue
+          alias: current_revenue
+        - name: total_net_revenue
+          offset_window: 1 month
+          alias: prior_revenue
+
+  # ── Operational ───────────────────────────────────────────────────────
+  - name: total_visits
+    description: "Total number of urgent care visits"
+    type: simple
+    type_params:
+      measure:
+        name: total_visits
+        fill_nulls_with: 0
+
+  - name: completed_visits
+    description: "Count of completed visits"
+    type: simple
+    type_params:
+      measure:
+        name: completed_visits
+        fill_nulls_with: 0
+
+  - name: visit_completion_rate
+    description: "Percentage of visits completed"
+    type: derived
+    type_params:
+      expr: "safe_divide(completed_visits, total_visits)"
+      metrics:
+        - name: completed_visits
+        - name: total_visits
+
+  - name: avg_wait_time
+    description: "Average patient wait time from check-in to provider — key ops KPI"
+    type: simple
+    type_params:
+      measure:
+        name: avg_wait_time_minutes
+
+  - name: door_to_provider_time
+    description: "Alias for avg_wait_time — minutes from door to provider"
+    type: simple
+    type_params:
+      measure:
+        name: avg_wait_time_minutes
+
+  - name: unique_patients_seen
+    description: "Count of distinct patients seen"
+    type: simple
+    type_params:
+      measure:
+        name: unique_patients
+        fill_nulls_with: 0
+
+  - name: new_patient_visits
+    description: "Count of visits from new patients"
+    type: simple
+    type_params:
+      measure:
+        name: new_patient_visits
+        fill_nulls_with: 0
+
+  - name: payer_mix_self_pay_pct
+    description: "Fraction of visits that are self-pay"
+    type: derived
+    type_params:
+      expr: "safe_divide(self_pay_visits, total_visits)"
+      metrics:
+        - name: self_pay_visits
+        - name: total_visits
+
+  - name: self_pay_visits
+    description: "Count of self-pay visits"
+    type: simple
+    type_params:
+      measure:
+        name: new_patient_visits
+        fill_nulls_with: 0

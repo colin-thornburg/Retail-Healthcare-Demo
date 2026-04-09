@@ -1,0 +1,37 @@
+semantic_models:
+  - name: studios
+    defaults:
+      agg_time_dimension: opened_date
+    description: "Studio dimension for Brand D"
+    model: ref('dim_studios')
+
+    entities:
+      - name: studio
+        type: primary
+        expr: studio_id
+
+    dimensions:
+      - name: opened_date
+        type: time
+        expr: "date_trunc(opened_date, DAY)"
+        type_params:
+          time_granularity: day
+      - name: city
+        type: categorical
+      - name: state
+        type: categorical
+      - name: region
+        type: categorical
+      - name: is_active
+        type: categorical
+        expr: "cast(is_active as string)"
+
+    measures:
+      - name: total_studios
+        agg: count
+        expr: studio_id
+      - name: active_studios
+        agg: count
+        expr: studio_id
+        agg_params:
+          where: "{{ Dimension('studio__is_active') }} = 'true'"

@@ -1,0 +1,143 @@
+version: 2
+
+models:
+  - name: stg_offices
+    description: "Cleaned and typed clinic location data for Brand C"
+    columns:
+      - name: clinic_id
+        description: "Primary key for clinic"
+        data_tests:
+          - unique
+          - not_null
+      - name: clinic_name
+        description: "Display name of the clinic"
+        data_tests:
+          - not_null
+      - name: clinic_type
+        description: "Type of clinic (Urgent Care, Occupational Health, Combo)"
+      - name: is_active
+        description: "Whether the clinic is currently active"
+
+  - name: stg_patients
+    description: "Cleaned and typed patient data for Brand C"
+    columns:
+      - name: patient_id
+        description: "Primary key for patient"
+        data_tests:
+          - unique
+          - not_null
+      - name: clinic_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: clinic_id
+      - name: age
+        description: "Calculated age in years"
+      - name: insurance_type
+        description: "Type of insurance (uppercased)"
+      - name: is_new_patient
+        description: "Whether this is the patient's first visit"
+      - name: registration_date
+        description: "Date of patient registration"
+
+  - name: stg_providers
+    description: "Cleaned and typed provider data for Brand C"
+    columns:
+      - name: provider_id
+        description: "Primary key for provider"
+        data_tests:
+          - unique
+          - not_null
+      - name: clinic_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: clinic_id
+      - name: provider_type
+        description: "Type of provider (Physician, NP, PA, X-Ray Tech)"
+      - name: is_active
+        description: "Whether the provider is currently active"
+
+  - name: stg_visits
+    description: "Cleaned and typed visit data for Brand C, including wait time calculations"
+    columns:
+      - name: visit_id
+        description: "Primary key for visit"
+        data_tests:
+          - unique
+          - not_null
+      - name: patient_id
+        description: "Foreign key to stg_patients"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_patients')
+                  field: patient_id
+      - name: provider_id
+        description: "Foreign key to stg_providers"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_providers')
+                  field: provider_id
+      - name: clinic_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: clinic_id
+      - name: visit_date
+        description: "Date of the visit"
+        data_tests:
+          - not_null
+      - name: wait_time_minutes
+        description: "Minutes from check-in to being seen by provider"
+      - name: total_visit_minutes
+        description: "Minutes from check-in to checkout"
+      - name: is_completed
+        description: "Derived boolean: true when visit_status = Completed"
+
+  - name: stg_billing
+    description: "Cleaned and typed billing data for Brand C"
+    columns:
+      - name: billing_id
+        description: "Primary key for billing record"
+        data_tests:
+          - unique
+          - not_null
+      - name: visit_id
+        description: "Foreign key to stg_visits"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_visits')
+                  field: visit_id
+      - name: patient_id
+        description: "Foreign key to stg_patients"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_patients')
+                  field: patient_id
+      - name: charge_amount
+        description: "Total amount billed"
+      - name: total_collected
+        description: "Sum of insurance and patient payments"
+      - name: insurance_coverage_pct
+        description: "Fraction of charge covered by insurance"
+      - name: payer_name
+        description: "Name of the insurance payer"
+      - name: payment_status
+        description: "Status of payment"

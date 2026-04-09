@@ -1,0 +1,13 @@
+provider_id,provider_name,provider_type,clinic_id,hire_date,is_active
+7001,Dr. Megan Sullivan,Physician,3001,2018-05-14,true
+7002,Dr. Raj Patel,Physician,3002,2017-10-22,true
+7003,Amanda Torres,Nurse Practitioner,3003,2016-12-18,true
+7004,Dr. Brian Walsh,Physician,3004,2019-04-09,true
+7005,Keisha Brown,Physician Assistant,3005,2018-08-27,true
+7006,Dr. Nancy Chen,Physician,3006,2020-03-15,true
+7007,Mike Johnson,X-Ray Tech,3007,2017-07-03,true
+7008,Dr. Laura Kim,Physician,3008,2019-12-10,true
+7009,Dr. Carlos Rivera,Physician,3009,2021-02-28,true
+7010,Patricia Scott,Nurse Practitioner,3010,2018-06-17,true
+7011,Dr. David Lee,Physician,3011,2020-10-05,true
+7012,Sandra Brooks,Physician Assistant,3012,2019-09-23,false

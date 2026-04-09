@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: int_visits_enriched
+    description: >
+      Visit-level data enriched with patient, provider, office, and billing details.
+      Grain: one row per visit_id.
+    columns:
+      - name: visit_id
+        description: "Primary key — one row per visit"
+        data_tests:
+          - unique
+          - not_null
+      - name: patient_id
+        description: "Patient who attended the visit"
+        data_tests:
+          - not_null
+      - name: office_id
+        description: "Office where the visit occurred"
+        data_tests:
+          - not_null
+      - name: visit_date
+        description: "Date of the visit"
+        data_tests:
+          - not_null
+      - name: charge_amount
+        description: "Total amount billed for this visit"
+      - name: is_completed
+        description: "True when visit_status = Completed"
+      - name: treatment_accepted
+        description: "Whether the patient accepted the treatment plan"
+
+  - name: int_office_daily_summary
+    description: >
+      Daily aggregated metrics per office.
+      Grain: one row per office_id + visit_date combination.
+    columns:
+      - name: office_id
+        description: "Office identifier"
+        data_tests:
+          - not_null
+      - name: visit_date
+        description: "Date of aggregation"
+        data_tests:
+          - not_null
+      - name: total_visits
+        description: "Total visits scheduled on this date"
+      - name: completed_visits
+        description: "Visits with status = Completed"
+      - name: cancelled_visits
+        description: "Visits with status = Cancelled"
+      - name: no_shows
+        description: "Visits with status = No-Show"
+      - name: unique_patients
+        description: "Count of distinct patients seen"
+      - name: total_charges
+        description: "Sum of all billed amounts for the day"
+      - name: total_insurance_collected
+        description: "Sum of insurance payments"
+      - name: total_patient_collected
+        description: "Sum of patient out-of-pocket payments"
+      - name: treatment_acceptance_rate
+        description: "Fraction of completed visits where treatment was accepted"

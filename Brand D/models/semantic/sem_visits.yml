@@ -1,0 +1,74 @@
+semantic_models:
+  - name: appointments
+    defaults:
+      agg_time_dimension: appointment_date
+    description: |
+      Appointment-level fact data for Brand D. Each row is a client appointment
+      including service type, membership details, and net revenue.
+    model: ref('fct_appointments')
+
+    entities:
+      - name: appointment
+        type: primary
+        expr: appointment_id
+      - name: client
+        type: foreign
+        expr: client_id
+      - name: provider
+        type: foreign
+        expr: provider_id
+      - name: studio
+        type: foreign
+        expr: studio_id
+
+    dimensions:
+      - name: appointment_date
+        type: time
+        expr: "date_trunc(appointment_date, DAY)"
+        type_params:
+          time_granularity: day
+      - name: service_type
+        type: categorical
+        description: "Type of aesthetic service"
+      - name: appointment_status
+        type: categorical
+      - name: is_completed
+        type: categorical
+        expr: "cast(is_completed as string)"
+      - name: membership_type
+        type: categorical
+      - name: is_repeat_client
+        type: categorical
+        expr: "cast(is_repeat_client as string)"
+      - name: payment_method
+        type: categorical
+
+    measures:
+      - name: total_appointments
+        agg: count
+        expr: appointment_id
+      - name: completed_appointments
+        agg: count
+        expr: appointment_id
+        agg_params:
+          where: "{{ Dimension('appointment__is_completed') }} = 'true'"
+      - name: repeat_client_appointments
+        agg: count
+        expr: appointment_id
+        agg_params:
+          where: "{{ Dimension('appointment__is_repeat_client') }} = 'true'"
+      - name: total_gross_revenue
+        agg: sum
+        expr: charge_amount
+      - name: total_discounts
+        agg: sum
+        expr: discount_amount
+      - name: total_net_revenue
+        agg: sum
+        expr: net_revenue
+      - name: avg_net_revenue_per_appt
+        agg: average
+        expr: net_revenue
+      - name: unique_clients
+        agg: count_distinct
+        expr: client_id

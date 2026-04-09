@@ -1,0 +1,21 @@
+clinic_id,clinic_name,city,state,region,opened_date,clinic_type,is_active
+3001,Brand C Syracuse East,Syracuse,NY,Northeast,2018-04-10,Urgent Care,true
+3002,Brand C Chicago Lincoln Park,Chicago,IL,Midwest,2017-09-25,Urgent Care,true
+3003,Brand C Buffalo Amherst,Amherst,NY,Northeast,2016-12-14,Urgent Care,true
+3004,Brand C Rochester Greece,Greece,NY,Northeast,2019-03-07,Urgent Care,true
+3005,Brand C Cleveland Beachwood,Beachwood,OH,Midwest,2018-07-22,Combo,true
+3006,Brand C Pittsburgh Cranberry,Cranberry Twp,PA,Northeast,2020-02-18,Urgent Care,true
+3007,Brand C Columbus Dublin,Dublin,OH,Midwest,2017-06-30,Urgent Care,true
+3008,Brand C Detroit Livonia,Livonia,MI,Midwest,2019-11-15,Urgent Care,true
+3009,Brand C Indianapolis Fishers,Fishers,IN,Midwest,2021-01-12,Urgent Care,true
+3010,Brand C Milwaukee Wauwatosa,Wauwatosa,WI,Midwest,2018-05-08,Occupational Health,true
+3011,Brand C Cincinnati Mason,Mason,OH,Midwest,2020-09-03,Urgent Care,true
+3012,Brand C Minneapolis Edina,Edina,MN,Midwest,2019-08-27,Urgent Care,true
+3013,Brand C Albany Colonie,Colonie,NY,Northeast,2021-04-19,Urgent Care,true
+3014,Brand C Hartford Glastonbury,Glastonbury,CT,Northeast,2022-03-14,Urgent Care,true
+3015,Brand C Philadelphia Wayne,Wayne,PA,Northeast,2017-10-31,Combo,true
+3016,Brand C Boston Natick,Natick,MA,Northeast,2020-12-07,Urgent Care,true
+3017,Brand C New Jersey Parsippany,Parsippany,NJ,Northeast,2018-08-16,Urgent Care,true
+3018,Brand C Louisville St Matthews,Louisville,KY,Southeast,2021-06-25,Urgent Care,true
+3019,Brand C Nashville Hendersonville,Hendersonville,TN,Southeast,2022-09-08,Urgent Care,true
+3020,Brand C Charlotte Concord,Concord,NC,Southeast,2023-01-15,Urgent Care,false

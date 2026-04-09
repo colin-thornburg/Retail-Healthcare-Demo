@@ -1,0 +1,43 @@
+semantic_models:
+  - name: patients
+    defaults:
+      agg_time_dimension: registration_date
+    description: "Patient dimension for Brand C"
+    model: ref('dim_patients')
+
+    entities:
+      - name: patient
+        type: primary
+        expr: patient_id
+      - name: clinic
+        type: foreign
+        expr: clinic_id
+
+    dimensions:
+      - name: registration_date
+        type: time
+        expr: "date_trunc(registration_date, DAY)"
+        type_params:
+          time_granularity: day
+      - name: insurance_type
+        type: categorical
+      - name: gender
+        type: categorical
+      - name: is_new_patient
+        type: categorical
+        expr: "cast(is_new_patient as string)"
+      - name: age_group
+        type: categorical
+        expr: |
+          case
+            when age < 18 then 'Pediatric'
+            when age between 18 and 34 then 'Young Adult'
+            when age between 35 and 54 then 'Adult'
+            when age between 55 and 64 then 'Senior'
+            else 'Medicare Age'
+          end
+
+    measures:
+      - name: total_patients
+        agg: count
+        expr: patient_id

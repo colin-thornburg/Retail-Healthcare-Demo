@@ -1,0 +1,163 @@
+version: 2
+
+models:
+  - name: stg_offices
+    description: "Cleaned and typed office location data for Brand A"
+    columns:
+      - name: office_id
+        description: "Primary key for office"
+        data_tests:
+          - unique
+          - not_null
+      - name: office_name
+        description: "Display name of the office"
+        data_tests:
+          - not_null
+      - name: city
+        description: "City where the office is located"
+      - name: state
+        description: "Two-letter US state abbreviation"
+      - name: region
+        description: "Geographic region (Midwest, Northeast, Southeast, Southwest, West)"
+      - name: opened_date
+        description: "Date the office opened"
+      - name: office_type
+        description: "Type of office (General, Specialty, Combo)"
+      - name: is_active
+        description: "Whether the office is currently active"
+
+  - name: stg_patients
+    description: "Cleaned and typed patient data for Brand A"
+    columns:
+      - name: patient_id
+        description: "Primary key for patient"
+        data_tests:
+          - unique
+          - not_null
+      - name: office_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: office_id
+      - name: date_of_birth
+        description: "Patient date of birth"
+      - name: age
+        description: "Calculated age in years"
+      - name: insurance_type
+        description: "Type of insurance (uppercased)"
+        data_tests:
+          - not_null
+      - name: patient_since
+        description: "Date patient first registered"
+      - name: is_active
+        description: "Whether the patient record is active"
+
+  - name: stg_providers
+    description: "Cleaned and typed provider data for Brand A"
+    columns:
+      - name: provider_id
+        description: "Primary key for provider"
+        data_tests:
+          - unique
+          - not_null
+      - name: office_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: office_id
+      - name: provider_type
+        description: "Type of provider (General Dentist, Hygienist, Orthodontist, Oral Surgeon)"
+      - name: hire_date
+        description: "Date provider was hired"
+      - name: is_active
+        description: "Whether the provider is currently active"
+
+  - name: stg_visits
+    description: "Cleaned and typed patient visit data for Brand A"
+    columns:
+      - name: visit_id
+        description: "Primary key for visit"
+        data_tests:
+          - unique
+          - not_null
+      - name: patient_id
+        description: "Foreign key to stg_patients"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_patients')
+                  field: patient_id
+      - name: provider_id
+        description: "Foreign key to stg_providers"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_providers')
+                  field: provider_id
+      - name: office_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: office_id
+      - name: visit_date
+        description: "Date of the visit"
+        data_tests:
+          - not_null
+      - name: visit_type
+        description: "Type of dental visit"
+      - name: visit_status
+        description: "Status of the visit (Completed, Cancelled, No-Show, Scheduled)"
+      - name: treatment_accepted
+        description: "Whether patient accepted the treatment plan"
+      - name: is_completed
+        description: "Derived boolean: true when visit_status = Completed"
+
+  - name: stg_billing
+    description: "Cleaned and typed billing data for Brand A"
+    columns:
+      - name: billing_id
+        description: "Primary key for billing record"
+        data_tests:
+          - unique
+          - not_null
+      - name: visit_id
+        description: "Foreign key to stg_visits"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_visits')
+                  field: visit_id
+      - name: patient_id
+        description: "Foreign key to stg_patients"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_patients')
+                  field: patient_id
+      - name: charge_amount
+        description: "Total amount billed"
+      - name: insurance_paid
+        description: "Amount covered by insurance"
+      - name: patient_paid
+        description: "Amount paid by patient"
+      - name: total_collected
+        description: "Sum of insurance_paid and patient_paid"
+      - name: insurance_coverage_pct
+        description: "Fraction of charge covered by insurance"
+      - name: billing_date
+        description: "Date the bill was generated"
+      - name: payment_status
+        description: "Status of payment (Paid, Pending, Denied, Write-Off)"

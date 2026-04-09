@@ -1,0 +1,72 @@
+semantic_models:
+  - name: visits
+    defaults:
+      agg_time_dimension: visit_date
+    description: |
+      Visit-level fact data for Brand E. Each row is a pet visit including
+      species, wellness plan coverage, and billing.
+    model: ref('fct_visits')
+
+    entities:
+      - name: visit
+        type: primary
+        expr: visit_id
+      - name: pet
+        type: foreign
+        expr: pet_id
+      - name: provider
+        type: foreign
+        expr: provider_id
+      - name: clinic
+        type: foreign
+        expr: clinic_id
+
+    dimensions:
+      - name: visit_date
+        type: time
+        expr: "date_trunc(visit_date, DAY)"
+        type_params:
+          time_granularity: day
+      - name: visit_type
+        type: categorical
+      - name: visit_status
+        type: categorical
+      - name: is_completed
+        type: categorical
+        expr: "cast(is_completed as string)"
+      - name: species
+        type: categorical
+        description: "Animal species (Dog, Cat, Bird, Rabbit, Reptile)"
+      - name: wellness_plan
+        type: categorical
+        description: "Pet's enrolled wellness plan"
+      - name: payment_status
+        type: categorical
+
+    measures:
+      - name: total_visits
+        agg: count
+        expr: visit_id
+      - name: completed_visits
+        agg: count
+        expr: visit_id
+        agg_params:
+          where: "{{ Dimension('visit__is_completed') }} = 'true'"
+      - name: total_charges
+        agg: sum
+        expr: charge_amount
+      - name: total_wellness_covered
+        agg: sum
+        expr: wellness_plan_covered
+      - name: total_owner_paid
+        agg: sum
+        expr: owner_paid
+      - name: total_net_revenue
+        agg: sum
+        expr: net_revenue
+      - name: avg_charge_per_visit
+        agg: average
+        expr: charge_amount
+      - name: unique_pets
+        agg: count_distinct
+        expr: pet_id

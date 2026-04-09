@@ -1,0 +1,157 @@
+version: 2
+
+models:
+  - name: stg_offices
+    description: "Cleaned and typed implant center location data for Brand B"
+    columns:
+      - name: center_id
+        description: "Primary key for implant center"
+        data_tests:
+          - unique
+          - not_null
+      - name: center_name
+        description: "Display name of the center"
+        data_tests:
+          - not_null
+      - name: city
+        description: "City where the center is located"
+      - name: state
+        description: "Two-letter US state abbreviation"
+      - name: region
+        description: "Geographic region"
+      - name: opened_date
+        description: "Date the center opened"
+      - name: center_type
+        description: "Type of center"
+      - name: is_active
+        description: "Whether the center is currently active"
+
+  - name: stg_patients
+    description: "Cleaned and typed patient data for Brand B"
+    columns:
+      - name: patient_id
+        description: "Primary key for patient"
+        data_tests:
+          - unique
+          - not_null
+      - name: center_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: center_id
+      - name: age
+        description: "Calculated age in years"
+      - name: insurance_type
+        description: "Type of insurance (uppercased)"
+      - name: referral_source
+        description: "How the patient found Brand B"
+      - name: consultation_date
+        description: "Date of first consultation"
+      - name: is_active
+        description: "Whether the patient record is active"
+
+  - name: stg_providers
+    description: "Cleaned and typed provider data for Brand B"
+    columns:
+      - name: provider_id
+        description: "Primary key for provider"
+        data_tests:
+          - unique
+          - not_null
+      - name: center_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: center_id
+      - name: provider_type
+        description: "Type of provider (Prosthodontist, Oral Surgeon, Dental Technician)"
+      - name: is_active
+        description: "Whether the provider is currently active"
+
+  - name: stg_visits
+    description: "Cleaned and typed visit data for Brand B"
+    columns:
+      - name: visit_id
+        description: "Primary key for visit"
+        data_tests:
+          - unique
+          - not_null
+      - name: patient_id
+        description: "Foreign key to stg_patients"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_patients')
+                  field: patient_id
+      - name: provider_id
+        description: "Foreign key to stg_providers"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_providers')
+                  field: provider_id
+      - name: center_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: center_id
+      - name: visit_date
+        description: "Date of the visit"
+        data_tests:
+          - not_null
+      - name: visit_type
+        description: "Stage of implant journey (Consultation, CT Scan, Surgery Day, etc.)"
+      - name: case_id
+        description: "Groups visits into a single implant case"
+      - name: is_completed
+        description: "Derived boolean: true when visit_status = Completed"
+
+  - name: stg_billing
+    description: "Cleaned and typed billing data for Brand B"
+    columns:
+      - name: billing_id
+        description: "Primary key for billing record"
+        data_tests:
+          - unique
+          - not_null
+      - name: visit_id
+        description: "Foreign key to stg_visits"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_visits')
+                  field: visit_id
+      - name: patient_id
+        description: "Foreign key to stg_patients"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_patients')
+                  field: patient_id
+      - name: charge_amount
+        description: "Total amount billed"
+      - name: insurance_paid
+        description: "Amount covered by insurance"
+      - name: patient_paid
+        description: "Amount paid by patient"
+      - name: total_collected
+        description: "Sum of insurance and patient payments"
+      - name: insurance_coverage_pct
+        description: "Fraction of charge covered by insurance"
+      - name: financing_used
+        description: "Whether patient used financing"
+      - name: payment_status
+        description: "Status of payment"

@@ -1,0 +1,138 @@
+version: 2
+
+models:
+  - name: dim_offices
+    description: "Office dimension — one row per office location"
+    config:
+      materialized: table
+    columns:
+      - name: office_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: office_name
+        data_tests:
+          - not_null
+      - name: state
+        data_tests:
+          - not_null
+      - name: region
+        data_tests:
+          - not_null
+          - accepted_values:
+                arguments:
+                  values: ['Midwest', 'Northeast', 'Southeast', 'Southwest', 'West']
+      - name: office_type
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['General', 'Specialty', 'Combo']
+      - name: office_age_years
+        description: "Years since the office opened"
+
+  - name: dim_patients
+    description: "Patient dimension — one row per patient"
+    config:
+      materialized: table
+    columns:
+      - name: patient_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: full_name
+        description: "Concatenated first and last name"
+      - name: office_id
+        description: "Home office for this patient"
+        data_tests:
+          - not_null
+      - name: insurance_type
+        data_tests:
+          - not_null
+      - name: tenure_months
+        description: "Months since patient_since date"
+
+  - name: dim_providers
+    description: "Provider dimension — one row per provider"
+    config:
+      materialized: table
+    columns:
+      - name: provider_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: office_id
+        description: "Office this provider belongs to"
+        data_tests:
+          - not_null
+      - name: provider_type
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['General Dentist', 'Hygienist', 'Orthodontist', 'Oral Surgeon']
+      - name: tenure_years
+        description: "Years since hire date"
+
+  - name: fct_visits
+    description: "Visit-level fact table — one row per patient visit"
+    config:
+      materialized: table
+    columns:
+      - name: visit_id
+        description: "Primary key"
+        data_tests:
+          - unique
+          - not_null
+      - name: patient_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_patients')
+                field: patient_id
+      - name: provider_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_providers')
+                field: provider_id
+      - name: office_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_offices')
+                field: office_id
+      - name: visit_date
+        data_tests:
+          - not_null
+      - name: visit_status
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: ['Completed', 'Cancelled', 'No-Show', 'Scheduled']
+      - name: net_revenue
+        description: "Total collected on completed visits, 0 otherwise"
+
+  - name: fct_revenue
+    description: "Daily revenue fact per office — designed for FP&A reporting"
+    config:
+      materialized: table
+    columns:
+      - name: office_id
+        data_tests:
+          - not_null
+      - name: revenue_date
+        data_tests:
+          - not_null
+      - name: gross_charges
+        description: "Total billed amount for the day"
+      - name: net_revenue
+        description: "Insurance + patient payments collected"
+      - name: avg_revenue_per_visit
+        description: "Net revenue divided by completed visits"
+      - name: treatment_acceptance_rate
+        description: "Fraction of completed visits where treatment was accepted"

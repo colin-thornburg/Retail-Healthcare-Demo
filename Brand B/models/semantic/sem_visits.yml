@@ -1,0 +1,72 @@
+semantic_models:
+  - name: cases
+    defaults:
+      agg_time_dimension: consultation_date
+    description: |
+      Implant case fact data for Brand B. Each row represents a complete
+      implant case (multi-visit journey) with revenue and conversion details.
+    model: ref('fct_cases')
+
+    entities:
+      - name: case
+        type: primary
+        expr: case_id
+      - name: patient
+        type: foreign
+        expr: patient_id
+      - name: center
+        type: foreign
+        expr: center_id
+
+    dimensions:
+      - name: consultation_date
+        type: time
+        expr: "date_trunc(consultation_date, DAY)"
+        type_params:
+          time_granularity: day
+      - name: case_status
+        type: categorical
+        description: "Case status: Completed, Active, or Lost"
+      - name: referral_source
+        type: categorical
+        description: "How the patient found Brand B"
+      - name: financing_used
+        type: categorical
+        expr: "cast(financing_used as string)"
+      - name: is_converted
+        type: categorical
+        expr: "cast(is_converted as string)"
+
+    measures:
+      - name: total_cases
+        description: "Count of all implant cases"
+        agg: count
+        expr: case_id
+      - name: converted_cases
+        description: "Cases that progressed to surgery"
+        agg: count
+        expr: case_id
+        agg_params:
+          where: "{{ Dimension('case__is_converted') }} = 'true'"
+      - name: total_case_revenue
+        description: "Total revenue across all cases"
+        agg: sum
+        expr: total_case_revenue
+      - name: avg_case_value
+        description: "Average revenue per case"
+        agg: average
+        expr: total_case_revenue
+      - name: avg_days_to_surgery
+        description: "Average days from consultation to surgery"
+        agg: average
+        expr: days_consultation_to_surgery
+      - name: financing_cases
+        description: "Count of cases using financing"
+        agg: count
+        expr: case_id
+        agg_params:
+          where: "{{ Dimension('case__financing_used') }} = 'true'"
+      - name: unique_patients
+        description: "Count of distinct patients"
+        agg: count_distinct
+        expr: patient_id

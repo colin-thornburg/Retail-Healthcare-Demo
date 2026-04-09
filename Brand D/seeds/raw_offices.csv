@@ -1,0 +1,11 @@
+studio_id,studio_name,city,state,region,opened_date,is_active
+4001,Brand D Nashville,Nashville,TN,Southeast,2020-05-15,true
+4002,Brand D Scottsdale,Scottsdale,AZ,West,2019-09-22,true
+4003,Brand D Austin,Austin,TX,Southwest,2021-03-10,true
+4004,Brand D Charlotte,Charlotte,NC,Southeast,2021-11-08,true
+4005,Brand D Denver,Denver,CO,West,2022-02-14,true
+4006,Brand D Atlanta,Atlanta,GA,Southeast,2020-08-30,true
+4007,Brand D Dallas,Dallas,TX,Southwest,2022-07-19,true
+4008,Brand D Miami,Miami,FL,Southeast,2023-01-25,true
+4009,Brand D Chicago,Chicago,IL,Midwest,2023-04-12,true
+4010,Brand D Phoenix,Phoenix,AZ,West,2024-01-08,false

@@ -1,0 +1,140 @@
+metrics:
+
+  # ── Revenue ──────────────────────────────────────────────────────────
+  - name: net_revenue
+    description: "Total net revenue after membership discounts"
+    type: simple
+    type_params:
+      measure:
+        name: total_net_revenue
+        fill_nulls_with: 0
+
+  - name: total_net_revenue
+    description: "Alias metric for net revenue"
+    type: simple
+    type_params:
+      measure:
+        name: total_net_revenue
+        fill_nulls_with: 0
+
+  - name: avg_revenue_per_treatment
+    description: "Average net revenue per completed appointment"
+    type: derived
+    type_params:
+      expr: "safe_divide(total_net_revenue, completed_appointments)"
+      metrics:
+        - name: total_net_revenue
+        - name: completed_appointments
+
+  - name: discount_rate
+    description: "Average discount applied as fraction of gross charges"
+    type: derived
+    type_params:
+      expr: "safe_divide(total_discounts, gross_revenue)"
+      metrics:
+        - name: total_discounts
+        - name: gross_revenue
+
+  - name: gross_revenue
+    description: "Total gross charges before discounts"
+    type: simple
+    type_params:
+      measure:
+        name: total_gross_revenue
+        fill_nulls_with: 0
+
+  - name: total_discounts
+    description: "Total membership discounts applied"
+    type: simple
+    type_params:
+      measure:
+        name: total_discounts
+        fill_nulls_with: 0
+
+  - name: cumulative_revenue
+    description: "Running total of net revenue"
+    type: cumulative
+    type_params:
+      measure:
+        name: total_net_revenue
+        fill_nulls_with: 0
+      window: 1 month
+
+  - name: revenue_mom_growth
+    description: "Month-over-month revenue growth rate"
+    type: derived
+    type_params:
+      expr: "safe_divide(current_revenue - prior_revenue, prior_revenue)"
+      metrics:
+        - name: total_net_revenue
+          alias: current_revenue
+        - name: total_net_revenue
+          offset_window: 1 month
+          alias: prior_revenue
+
+  # ── Operational ───────────────────────────────────────────────────────
+  - name: total_appointments
+    description: "Total number of appointments"
+    type: simple
+    type_params:
+      measure:
+        name: total_appointments
+        fill_nulls_with: 0
+
+  - name: completed_appointments
+    description: "Count of completed appointments"
+    type: simple
+    type_params:
+      measure:
+        name: completed_appointments
+        fill_nulls_with: 0
+
+  - name: unique_clients_seen
+    description: "Count of distinct clients seen"
+    type: simple
+    type_params:
+      measure:
+        name: unique_clients
+        fill_nulls_with: 0
+
+  - name: client_retention_rate
+    description: "Fraction of appointments from repeat clients"
+    type: derived
+    type_params:
+      expr: "safe_divide(repeat_client_appointments, total_appointments)"
+      metrics:
+        - name: repeat_client_appointments
+        - name: total_appointments
+
+  - name: repeat_client_appointments
+    description: "Count of appointments from repeat clients"
+    type: simple
+    type_params:
+      measure:
+        name: repeat_client_appointments
+        fill_nulls_with: 0
+
+  - name: membership_penetration_rate
+    description: "Fraction of clients enrolled in a membership"
+    type: derived
+    type_params:
+      expr: "safe_divide(member_clients, total_clients)"
+      metrics:
+        - name: member_clients
+        - name: total_clients
+
+  - name: total_clients
+    description: "Total number of clients"
+    type: simple
+    type_params:
+      measure:
+        name: total_clients
+        fill_nulls_with: 0
+
+  - name: member_clients
+    description: "Count of clients with an active membership"
+    type: simple
+    type_params:
+      measure:
+        name: member_clients
+        fill_nulls_with: 0

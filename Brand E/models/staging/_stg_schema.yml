@@ -1,0 +1,147 @@
+version: 2
+
+models:
+  - name: stg_offices
+    description: "Cleaned and typed veterinary clinic location data for Brand E"
+    columns:
+      - name: clinic_id
+        description: "Primary key for clinic"
+        data_tests:
+          - unique
+          - not_null
+      - name: clinic_name
+        description: "Display name of the clinic"
+        data_tests:
+          - not_null
+      - name: clinic_type
+        description: "Type of clinic (General Practice, Emergency, Specialty)"
+      - name: is_active
+        description: "Whether the clinic is currently active"
+
+  - name: stg_patients
+    description: "Cleaned and typed pet patient data for Brand E"
+    columns:
+      - name: pet_id
+        description: "Primary key for pet patient"
+        data_tests:
+          - unique
+          - not_null
+      - name: clinic_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: clinic_id
+      - name: species
+        description: "Animal species (Dog, Cat, Bird, Rabbit, Reptile)"
+      - name: breed
+        description: "Animal breed"
+      - name: age_years
+        description: "Calculated age in years"
+      - name: wellness_plan
+        description: "Enrolled wellness plan (None, Basic Wellness, Premium Wellness)"
+      - name: owner_name
+        description: "Full name of the pet owner"
+      - name: is_active
+        description: "Whether the pet record is active"
+
+  - name: stg_providers
+    description: "Cleaned and typed veterinary provider data for Brand E"
+    columns:
+      - name: provider_id
+        description: "Primary key for provider"
+        data_tests:
+          - unique
+          - not_null
+      - name: clinic_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: clinic_id
+      - name: provider_type
+        description: "Type of provider (Veterinarian, Vet Technician, Specialist)"
+      - name: is_active
+        description: "Whether the provider is currently active"
+
+  - name: stg_visits
+    description: "Cleaned and typed pet visit data for Brand E"
+    columns:
+      - name: visit_id
+        description: "Primary key for visit"
+        data_tests:
+          - unique
+          - not_null
+      - name: pet_id
+        description: "Foreign key to stg_patients"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_patients')
+                  field: pet_id
+      - name: provider_id
+        description: "Foreign key to stg_providers"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_providers')
+                  field: provider_id
+      - name: clinic_id
+        description: "Foreign key to stg_offices"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_offices')
+                  field: clinic_id
+      - name: visit_date
+        description: "Date of the visit"
+        data_tests:
+          - not_null
+      - name: visit_type
+        description: "Type of veterinary visit"
+      - name: is_completed
+        description: "Derived boolean: true when visit_status = Completed"
+
+  - name: stg_billing
+    description: "Cleaned and typed billing data for Brand E"
+    columns:
+      - name: billing_id
+        description: "Primary key for billing record"
+        data_tests:
+          - unique
+          - not_null
+      - name: visit_id
+        description: "Foreign key to stg_visits"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_visits')
+                  field: visit_id
+      - name: pet_id
+        description: "Foreign key to stg_patients"
+        data_tests:
+          - not_null
+          - relationships:
+                arguments:
+                  to: ref('stg_patients')
+                  field: pet_id
+      - name: charge_amount
+        description: "Total amount billed"
+      - name: wellness_plan_covered
+        description: "Amount covered by wellness plan"
+      - name: owner_paid
+        description: "Amount paid by the pet owner"
+      - name: total_collected
+        description: "Sum of wellness plan coverage and owner payment"
+      - name: wellness_coverage_pct
+        description: "Fraction of charge covered by wellness plan"
+      - name: payment_status
+        description: "Status of payment"

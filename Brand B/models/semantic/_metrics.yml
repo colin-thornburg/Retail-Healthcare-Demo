@@ -1,0 +1,104 @@
+metrics:
+
+  # ── Revenue ──────────────────────────────────────────────────────────
+  - name: net_revenue
+    description: "Total revenue from implant cases"
+    type: simple
+    type_params:
+      measure:
+        name: total_case_revenue
+        fill_nulls_with: 0
+
+  - name: total_net_revenue
+    description: "Alias for total case revenue"
+    type: simple
+    type_params:
+      measure:
+        name: total_case_revenue
+        fill_nulls_with: 0
+
+  - name: avg_case_value
+    description: "Average revenue per implant case"
+    type: simple
+    type_params:
+      measure:
+        name: avg_case_value
+
+  - name: cumulative_revenue
+    description: "Running total of case revenue"
+    type: cumulative
+    type_params:
+      measure:
+        name: total_case_revenue
+        fill_nulls_with: 0
+      window: 1 month
+
+  - name: revenue_mom_growth
+    description: "Month-over-month revenue growth rate"
+    type: derived
+    type_params:
+      expr: "safe_divide(current_revenue - prior_revenue, prior_revenue)"
+      metrics:
+        - name: total_net_revenue
+          alias: current_revenue
+        - name: total_net_revenue
+          offset_window: 1 month
+          alias: prior_revenue
+
+  # ── Operational ───────────────────────────────────────────────────────
+  - name: total_cases
+    description: "Total number of implant cases"
+    type: simple
+    type_params:
+      measure:
+        name: total_cases
+        fill_nulls_with: 0
+
+  - name: converted_cases
+    description: "Cases that progressed to surgery"
+    type: simple
+    type_params:
+      measure:
+        name: converted_cases
+        fill_nulls_with: 0
+
+  - name: consultation_to_close_rate
+    description: "Fraction of cases that converted to surgery — primary conversion KPI"
+    type: derived
+    type_params:
+      expr: "safe_divide(converted_cases, total_cases)"
+      metrics:
+        - name: converted_cases
+        - name: total_cases
+
+  - name: avg_days_to_surgery
+    description: "Average days from consultation to surgery date"
+    type: simple
+    type_params:
+      measure:
+        name: avg_days_to_surgery
+
+  - name: financing_cases
+    description: "Count of cases using patient financing"
+    type: simple
+    type_params:
+      measure:
+        name: financing_cases
+        fill_nulls_with: 0
+
+  - name: financing_utilization_rate
+    description: "Fraction of cases using financing"
+    type: derived
+    type_params:
+      expr: "safe_divide(financing_cases, total_cases)"
+      metrics:
+        - name: financing_cases
+        - name: total_cases
+
+  - name: unique_patients_seen
+    description: "Count of distinct patients"
+    type: simple
+    type_params:
+      measure:
+        name: unique_patients
+        fill_nulls_with: 0

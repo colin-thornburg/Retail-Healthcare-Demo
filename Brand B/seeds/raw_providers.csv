@@ -1,0 +1,11 @@
+provider_id,provider_name,provider_type,center_id,hire_date,is_active
+6001,Dr. Catherine Reyes,Prosthodontist,2001,2017-04-15,true
+6002,Dr. Andrew Kim,Oral Surgeon,2001,2018-02-20,true
+6003,Dr. Michelle Park,Prosthodontist,2002,2016-10-08,true
+6004,Dr. Jonathan Lee,Oral Surgeon,2003,2015-12-14,true
+6005,Dr. Rachel Cohen,Prosthodontist,2004,2018-07-30,true
+6006,Marcus Williams,Dental Technician,2004,2019-03-11,true
+6007,Dr. Kevin O'Brien,Oral Surgeon,2005,2019-09-22,true
+6008,Dr. Sophia Patel,Prosthodontist,2006,2017-08-05,true
+6009,Dr. James Nguyen,Oral Surgeon,2007,2020-02-18,true
+6010,Sandra Castillo,Dental Technician,2008,2018-11-29,false

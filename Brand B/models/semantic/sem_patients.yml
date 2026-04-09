@@ -1,0 +1,41 @@
+semantic_models:
+  - name: patients
+    defaults:
+      agg_time_dimension: consultation_date
+    description: "Patient dimension for Brand B"
+    model: ref('dim_patients')
+
+    entities:
+      - name: patient
+        type: primary
+        expr: patient_id
+      - name: center
+        type: foreign
+        expr: center_id
+
+    dimensions:
+      - name: consultation_date
+        type: time
+        expr: "date_trunc(consultation_date, DAY)"
+        type_params:
+          time_granularity: day
+      - name: insurance_type
+        type: categorical
+      - name: gender
+        type: categorical
+      - name: referral_source
+        type: categorical
+      - name: age_group
+        type: categorical
+        expr: |
+          case
+            when age < 45 then 'Under 45'
+            when age between 45 and 59 then '45-59'
+            when age between 60 and 74 then '60-74'
+            else '75+'
+          end
+
+    measures:
+      - name: total_patients
+        agg: count
+        expr: patient_id

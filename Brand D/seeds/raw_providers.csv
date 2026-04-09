@@ -1,0 +1,9 @@
+provider_id,provider_name,provider_type,studio_id,hire_date,is_active
+8001,Dr. Olivia Hartman,Dermatologist,4001,2020-06-01,true
+8002,Jessica Park,Aesthetic Nurse,4001,2020-07-15,true
+8003,Dr. Amanda Cruz,Injector,4002,2019-10-20,true
+8004,Natalie Brooks,Esthetician,4002,2021-01-10,true
+8005,Dr. Lauren Kim,Dermatologist,4003,2021-04-05,true
+8006,Maya Johnson,Aesthetic Nurse,4004,2022-01-18,true
+8007,Dr. Stephanie Lee,Injector,4005,2022-03-28,true
+8008,Rachel Torres,Esthetician,4006,2020-09-14,false

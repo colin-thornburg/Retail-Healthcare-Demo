@@ -1,0 +1,16 @@
+provider_id,provider_name,provider_type,office_id,hire_date,is_active
+5001,Dr. Sarah Johnson,General Dentist,1001,2018-03-10,true
+5002,Maria Chen,Hygienist,1001,2019-07-15,true
+5003,Dr. Robert Mitchell,General Dentist,1002,2017-05-22,true
+5004,Dr. Jennifer Davis,General Dentist,1003,2016-09-12,true
+5005,Dr. William Garcia,General Dentist,1004,2018-11-30,true
+5006,Dr. Patricia Anderson,General Dentist,1005,2020-01-08,true
+5007,Dr. Michael Thompson,Orthodontist,1006,2017-04-17,true
+5008,Dr. Elizabeth Brown,Oral Surgeon,1007,2016-08-25,true
+5009,Dr. James Wilson,General Dentist,1008,2020-02-14,true
+5010,Ashley Rodriguez,Hygienist,1009,2019-06-03,true
+5011,Dr. Christopher Martinez,General Dentist,1010,2015-10-19,true
+5012,Dr. Linda Taylor,General Dentist,1011,2020-03-26,true
+5013,Dr. David Harris,General Dentist,1012,2017-07-11,true
+5014,Dr. Barbara Moore,Orthodontist,1013,2021-01-04,true
+5015,Dr. Thomas Jackson,General Dentist,1014,2018-09-28,false

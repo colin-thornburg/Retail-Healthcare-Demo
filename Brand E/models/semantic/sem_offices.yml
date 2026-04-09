@@ -1,0 +1,39 @@
+semantic_models:
+  - name: clinics
+    defaults:
+      agg_time_dimension: opened_date
+    description: "Veterinary clinic dimension for Brand E"
+    model: ref('dim_clinics')
+
+    entities:
+      - name: clinic
+        type: primary
+        expr: clinic_id
+
+    dimensions:
+      - name: opened_date
+        type: time
+        expr: "date_trunc(opened_date, DAY)"
+        type_params:
+          time_granularity: day
+      - name: city
+        type: categorical
+      - name: state
+        type: categorical
+      - name: region
+        type: categorical
+      - name: clinic_type
+        type: categorical
+      - name: is_active
+        type: categorical
+        expr: "cast(is_active as string)"
+
+    measures:
+      - name: total_clinics
+        agg: count
+        expr: clinic_id
+      - name: active_clinics
+        agg: count
+        expr: clinic_id
+        agg_params:
+          where: "{{ Dimension('clinic__is_active') }} = 'true'"
