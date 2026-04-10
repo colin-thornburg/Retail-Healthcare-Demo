@@ -1,0 +1,41 @@
+name: 'tag_core'
+version: '1.0.0'
+
+require-dbt-version: [">=1.7.0", "<2.0.0"]
+
+profile: 'default'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# ============================================
+# MODEL CONFIGURATIONS
+# ============================================
+models:
+  tag_core:
+    marts:
+      +materialized: table
+      +schema: tag_core_marts
+      +tags: ['tag_core', 'marts']
+
+    semantic:
+      +materialized: table
+      +tags: ['tag_core', 'semantic']
+
+# ============================================
+# TEST CONFIGURATIONS
+# ============================================
+tests:
+  +severity: warn
+
+# ============================================
+# VARS
+# ============================================
+vars:
+  brand_name: 'TAG Core'
+  brand_code: 'TAG'

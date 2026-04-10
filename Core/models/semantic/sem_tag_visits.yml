@@ -1,0 +1,75 @@
+semantic_models:
+  - name: tag_visits
+    defaults:
+      agg_time_dimension: activity_date
+    description: |
+      Cross-brand visit/activity data for all TAG brands.
+      Enables enterprise-wide operational and financial analysis.
+      Each row is a single patient/client/pet activity from any brand.
+    model: ref('fct_tag_visits')
+
+    entities:
+      - name: tag_visit
+        type: primary
+        expr: "concat(brand_code, '-', visit_id)"
+      - name: location
+        type: foreign
+        expr: "concat(brand_code, '-', location_id)"
+
+    dimensions:
+      - name: activity_date
+        type: time
+        expr: "date_trunc(activity_date, DAY)"
+        type_params:
+          time_granularity: day
+      - name: brand
+        type: categorical
+        description: "TAG brand name (Aspen Dental, ClearChoice, WellNow, Chapter, Lovet)"
+      - name: brand_code
+        type: categorical
+        description: "Short brand code (Brand A through Brand E)"
+      - name: activity_type
+        type: categorical
+        description: "Type of service delivered, normalized across brands"
+      - name: status
+        type: categorical
+        description: "Activity status"
+      - name: is_completed
+        type: categorical
+        expr: "cast(is_completed as string)"
+
+    measures:
+      - name: total_activities
+        description: "Total count of activities across all brands"
+        agg: count
+        expr: visit_id
+      - name: completed_activities
+        description: "Count of completed activities"
+        agg: count
+        expr: visit_id
+        agg_params:
+          where: "{{ Dimension('tag_visit__is_completed') }} = 'true'"
+      - name: tag_gross_charges
+        description: "Total gross charges across TAG"
+        agg: sum
+        expr: charge_amount
+      - name: tag_net_revenue
+        description: "Total net revenue across TAG"
+        agg: sum
+        expr: net_revenue
+      - name: tag_insurance_collected
+        description: "Total insurance/wellness plan coverage across TAG"
+        agg: sum
+        expr: insurance_paid
+      - name: tag_patient_collected
+        description: "Total patient/client/owner payments across TAG"
+        agg: sum
+        expr: patient_paid
+      - name: tag_avg_revenue
+        description: "Average revenue per activity"
+        agg: average
+        expr: net_revenue
+      - name: unique_locations
+        description: "Count of distinct locations with activity"
+        agg: count_distinct
+        expr: location_id

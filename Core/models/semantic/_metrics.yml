@@ -1,0 +1,114 @@
+metrics:
+
+  # ── Portfolio Revenue ──────────────────────────────────────────────
+  - name: tag_total_revenue
+    description: "Total net revenue across all TAG brands"
+    type: simple
+    type_params:
+      measure:
+        name: tag_net_revenue
+        fill_nulls_with: 0
+
+  - name: tag_gross_charges
+    description: "Total gross charges across the TAG portfolio"
+    type: simple
+    type_params:
+      measure:
+        name: tag_gross_charges
+        fill_nulls_with: 0
+
+  - name: tag_revenue_by_brand
+    description: "Monthly net revenue — slice by brand dimension for portfolio comparison"
+    type: simple
+    type_params:
+      measure:
+        name: monthly_net_revenue
+        fill_nulls_with: 0
+
+  - name: tag_avg_revenue_per_activity
+    description: "Average revenue per completed activity across TAG"
+    type: simple
+    type_params:
+      measure:
+        name: tag_avg_revenue
+
+  - name: tag_cumulative_revenue
+    description: "Running total of net revenue across all brands"
+    type: cumulative
+    type_params:
+      measure:
+        name: tag_net_revenue
+        fill_nulls_with: 0
+      window: 1 month
+
+  - name: tag_revenue_mom_growth
+    description: "Month-over-month portfolio revenue growth rate"
+    type: derived
+    type_params:
+      expr: "safe_divide(current_revenue - prior_revenue, prior_revenue)"
+      metrics:
+        - name: tag_total_revenue
+          alias: current_revenue
+        - name: tag_total_revenue
+          offset_window: 1 month
+          alias: prior_revenue
+
+  # ── Portfolio Operations ───────────────────────────────────────────
+  - name: tag_total_activities
+    description: "Total patient/client activities across all brands"
+    type: simple
+    type_params:
+      measure:
+        name: total_activities
+        fill_nulls_with: 0
+
+  - name: tag_completed_activities
+    description: "Total completed activities across all brands"
+    type: simple
+    type_params:
+      measure:
+        name: completed_activities
+        fill_nulls_with: 0
+
+  - name: tag_completion_rate
+    description: "Activity completion rate across all brands"
+    type: derived
+    type_params:
+      expr: "safe_divide(tag_completed_activities, tag_total_activities)"
+      metrics:
+        - name: tag_completed_activities
+        - name: tag_total_activities
+
+  - name: tag_location_count
+    description: "Number of distinct active locations across the portfolio"
+    type: simple
+    type_params:
+      measure:
+        name: unique_locations
+        fill_nulls_with: 0
+
+  # ── Insurance Mix ─────────────────────────────────────────────────
+  - name: tag_insurance_collected
+    description: "Total insurance and wellness plan coverage collected"
+    type: simple
+    type_params:
+      measure:
+        name: tag_insurance_collected
+        fill_nulls_with: 0
+
+  - name: tag_patient_collected
+    description: "Total out-of-pocket payments from patients/clients/owners"
+    type: simple
+    type_params:
+      measure:
+        name: tag_patient_collected
+        fill_nulls_with: 0
+
+  - name: tag_insurance_mix_pct
+    description: "Fraction of net revenue covered by insurance or wellness plans"
+    type: derived
+    type_params:
+      expr: "safe_divide(tag_insurance_collected, tag_gross_charges)"
+      metrics:
+        - name: tag_insurance_collected
+        - name: tag_gross_charges

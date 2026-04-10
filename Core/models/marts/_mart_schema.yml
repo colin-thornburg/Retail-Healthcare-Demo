@@ -1,0 +1,111 @@
+version: 2
+
+models:
+  - name: fct_tag_visits
+    description: >
+      Unified activity-level fact table across all 5 TAG brands.
+      Normalizes brand-specific terminology (visits, cases, appointments)
+      into a common schema for cross-brand analytics.
+      Grain: one row per activity (visit, case, or appointment) per brand.
+    columns:
+      - name: visit_id
+        description: "Activity identifier (unique within brand, not globally unique)"
+        data_tests:
+          - not_null
+      - name: brand
+        description: "TAG brand name"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Aspen Dental', 'ClearChoice', 'WellNow', 'Chapter', 'Lovet']
+      - name: brand_code
+        description: "Short brand code (Brand A through Brand E)"
+        data_tests:
+          - not_null
+      - name: location_id
+        description: "Location identifier within the brand"
+        data_tests:
+          - not_null
+      - name: activity_date
+        description: "Date of the activity"
+        data_tests:
+          - not_null
+      - name: activity_type
+        description: "Type of activity normalized across brands"
+      - name: status
+        description: "Status of the activity"
+      - name: is_completed
+        description: "Whether the activity was completed"
+      - name: charge_amount
+        description: "Gross amount charged"
+      - name: insurance_paid
+        description: "Amount covered by insurance or wellness plan"
+      - name: patient_paid
+        description: "Amount paid by patient/client/owner"
+      - name: net_revenue
+        description: "Total revenue collected for the activity"
+
+  - name: fct_tag_revenue
+    description: >
+      Monthly revenue aggregated by brand. Derived from fct_tag_visits.
+      Primary model for TAG portfolio-level financial reporting.
+      Grain: one row per brand per revenue_month.
+    columns:
+      - name: brand
+        data_tests:
+          - not_null
+      - name: brand_code
+        data_tests:
+          - not_null
+      - name: revenue_month
+        description: "First day of the month (date_trunc)"
+        data_tests:
+          - not_null
+      - name: total_activities
+        description: "Total activities in the month (all statuses)"
+      - name: completed_activities
+        description: "Completed activities in the month"
+      - name: gross_charges
+        description: "Total amount billed"
+      - name: net_revenue
+        description: "Total revenue collected"
+      - name: avg_revenue_per_activity
+        description: "Net revenue per completed activity"
+      - name: completion_rate
+        description: "Fraction of activities completed"
+
+  - name: dim_tag_locations
+    description: >
+      Unified location directory across all 5 TAG brands.
+      Normalizes offices, centers, clinics, and studios into a common schema.
+      Grain: one row per location per brand.
+    columns:
+      - name: brand
+        data_tests:
+          - not_null
+      - name: brand_code
+        data_tests:
+          - not_null
+      - name: location_id
+        description: "Location identifier within the brand"
+        data_tests:
+          - not_null
+      - name: location_name
+        description: "Display name of the location"
+        data_tests:
+          - not_null
+      - name: city
+        description: "City where the location operates"
+      - name: state
+        description: "Two-letter US state abbreviation"
+      - name: region
+        description: "Geographic region"
+      - name: location_type
+        description: "Type of location normalized across brands"
+      - name: opened_date
+        description: "Date the location opened"
+      - name: is_active
+        description: "Whether the location is currently active"
+      - name: location_age_years
+        description: "Years since the location opened"

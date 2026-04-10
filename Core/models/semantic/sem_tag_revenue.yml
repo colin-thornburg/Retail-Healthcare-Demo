@@ -1,0 +1,47 @@
+semantic_models:
+  - name: tag_revenue
+    defaults:
+      agg_time_dimension: revenue_month
+    description: |
+      Monthly revenue by brand for TAG portfolio reporting.
+      Pre-aggregated for efficient FP&A queries.
+    model: ref('fct_tag_revenue')
+
+    entities:
+      - name: brand_month
+        type: primary
+        expr: "concat(brand_code, '-', cast(revenue_month as string))"
+
+    dimensions:
+      - name: revenue_month
+        type: time
+        expr: "date_trunc(revenue_month, MONTH)"
+        type_params:
+          time_granularity: month
+      - name: brand
+        type: categorical
+        description: "TAG brand name"
+      - name: brand_code
+        type: categorical
+
+    measures:
+      - name: monthly_net_revenue
+        description: "Net revenue for the month"
+        agg: sum
+        expr: net_revenue
+      - name: monthly_gross_charges
+        description: "Gross charges for the month"
+        agg: sum
+        expr: gross_charges
+      - name: monthly_activities
+        description: "Total activities in the month"
+        agg: sum
+        expr: total_activities
+      - name: monthly_completed
+        description: "Completed activities in the month"
+        agg: sum
+        expr: completed_activities
+      - name: monthly_avg_revenue_per_activity
+        description: "Average revenue per activity in the month"
+        agg: average
+        expr: avg_revenue_per_activity
