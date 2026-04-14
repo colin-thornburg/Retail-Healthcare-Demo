@@ -52,7 +52,6 @@ models:
       - name: is_active
         dimension:
           type: categorical
-          expr: "cast(is_active as string)"
       - name: office_age_years
         description: "Years since the office opened"
     metrics:
@@ -66,7 +65,7 @@ models:
         description: "Count of active office locations"
         agg: count
         expr: office_id
-        filter: "{{ Dimension('office__is_active') }} = 'true'"
+        filter: "{{ Dimension('office__is_active') }} = true"
 
   - name: dim_patients
     description: "Patient dimension — one row per patient"
@@ -110,18 +109,9 @@ models:
       - name: age_group
         dimension:
           type: categorical
-          expr: |
-            case
-              when age < 18 then 'Pediatric'
-              when age between 18 and 34 then 'Young Adult'
-              when age between 35 and 54 then 'Adult'
-              when age between 55 and 64 then 'Senior'
-              else 'Medicare Age'
-            end
       - name: is_active
         dimension:
           type: categorical
-          expr: "cast(is_active as string)"
       - name: tenure_months
         description: "Months since patient_since date"
     metrics:
@@ -135,7 +125,7 @@ models:
         description: "Count of currently active patients"
         agg: count
         expr: patient_id
-        filter: "{{ Dimension('patient__is_active') }} = 'true'"
+        filter: "{{ Dimension('patient__is_active') }} = true"
       - name: avg_patient_tenure
         type: simple
         description: "Average tenure of patients in months"
@@ -232,12 +222,10 @@ models:
         description: "True when visit_status = Completed"
         dimension:
           type: categorical
-          expr: "cast(is_completed as string)"
       - name: treatment_accepted
         description: "Whether the patient accepted the treatment plan"
         dimension:
           type: categorical
-          expr: "cast(treatment_accepted as string)"
       - name: payment_status
         dimension:
           type: categorical
@@ -254,7 +242,7 @@ models:
         description: "Count of completed visits"
         agg: count
         expr: visit_id
-        filter: "{{ Dimension('visit__is_completed') }} = 'true'"
+        filter: "{{ Dimension('visit__is_completed') }} = true"
       - name: total_charges
         type: simple
         description: "Total gross charges"
@@ -275,7 +263,7 @@ models:
         description: "Count of visits where treatment was accepted"
         agg: count
         expr: visit_id
-        filter: "{{ Dimension('visit__treatment_accepted') }} = 'true'"
+        filter: "{{ Dimension('visit__treatment_accepted') }} = true"
       - name: unique_patients_seen
         type: simple
         description: "Count of distinct patients seen"
@@ -301,7 +289,6 @@ models:
         entity:
           name: office_revenue
           type: primary
-          expr: "concat(cast(office_id as string), '-', cast(revenue_date as string))"
       - name: revenue_date
         data_tests:
           - not_null

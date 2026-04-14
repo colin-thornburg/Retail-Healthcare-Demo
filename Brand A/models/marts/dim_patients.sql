@@ -10,6 +10,13 @@ select
     date_of_birth,
     age,
     gender,
+    case
+        when age < 18 then 'Pediatric'
+        when age between 18 and 34 then 'Young Adult'
+        when age between 35 and 54 then 'Adult'
+        when age between 55 and 64 then 'Senior'
+        else 'Medicare Age'
+    end                                         as age_group,
     office_id,
     insurance_type,
     patient_since,

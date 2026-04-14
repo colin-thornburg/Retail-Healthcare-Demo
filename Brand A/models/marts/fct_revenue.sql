@@ -4,6 +4,8 @@ with daily as (
 
 select
     office_id,
+    concat(cast(office_id as string), '-', cast(visit_date as string))
+                                                  as office_revenue,
     office_name,
     city,
     state,
