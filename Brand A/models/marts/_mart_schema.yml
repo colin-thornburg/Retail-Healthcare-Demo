@@ -5,53 +5,142 @@ models:
     description: "Office dimension — one row per office location"
     config:
       materialized: table
+    semantic_model:
+      enabled: true
+      name: offices
+    agg_time_dimension: opened_date
     columns:
       - name: office_id
         description: "Primary key"
         data_tests:
           - unique
           - not_null
+        entity:
+          name: office
+          type: primary
       - name: office_name
         data_tests:
           - not_null
       - name: state
         data_tests:
           - not_null
+        dimension:
+          type: categorical
       - name: region
         data_tests:
           - not_null
           - accepted_values:
                 arguments:
                   values: ['Midwest', 'Northeast', 'Southeast', 'Southwest', 'West']
+        dimension:
+          type: categorical
       - name: office_type
         data_tests:
           - accepted_values:
                 arguments:
                   values: ['General', 'Specialty', 'Combo']
+        dimension:
+          type: categorical
+      - name: opened_date
+        description: "Date the office opened"
+        granularity: day
+        dimension:
+          type: time
+      - name: city
+        dimension:
+          type: categorical
+      - name: is_active
+        dimension:
+          type: categorical
+          expr: "cast(is_active as string)"
       - name: office_age_years
         description: "Years since the office opened"
+    metrics:
+      - name: total_offices
+        type: simple
+        description: "Count of office locations"
+        agg: count
+        expr: office_id
+      - name: active_offices
+        type: simple
+        description: "Count of active office locations"
+        agg: count
+        expr: office_id
+        filter: "{{ Dimension('office__is_active') }} = 'true'"
 
   - name: dim_patients
     description: "Patient dimension — one row per patient"
     config:
       materialized: table
+    semantic_model:
+      enabled: true
+      name: patients
+    agg_time_dimension: patient_since
     columns:
       - name: patient_id
         description: "Primary key"
         data_tests:
           - unique
           - not_null
+        entity:
+          name: patient
+          type: primary
       - name: full_name
         description: "Concatenated first and last name"
       - name: office_id
         description: "Home office for this patient"
         data_tests:
           - not_null
+        entity:
+          name: office
+          type: foreign
       - name: insurance_type
         data_tests:
           - not_null
+        dimension:
+          type: categorical
+      - name: patient_since
+        description: "Date the patient first registered"
+        granularity: day
+        dimension:
+          type: time
+      - name: gender
+        dimension:
+          type: categorical
+      - name: age_group
+        dimension:
+          type: categorical
+          expr: |
+            case
+              when age < 18 then 'Pediatric'
+              when age between 18 and 34 then 'Young Adult'
+              when age between 35 and 54 then 'Adult'
+              when age between 55 and 64 then 'Senior'
+              else 'Medicare Age'
+            end
+      - name: is_active
+        dimension:
+          type: categorical
+          expr: "cast(is_active as string)"
       - name: tenure_months
         description: "Months since patient_since date"
+    metrics:
+      - name: total_patients
+        type: simple
+        description: "Count of all patients"
+        agg: count
+        expr: patient_id
+      - name: active_patient_count
+        type: simple
+        description: "Count of currently active patients"
+        agg: count
+        expr: patient_id
+        filter: "{{ Dimension('patient__is_active') }} = 'true'"
+      - name: avg_patient_tenure
+        type: simple
+        description: "Average tenure of patients in months"
+        agg: average
+        expr: tenure_months
 
   - name: dim_providers
     description: "Provider dimension — one row per provider"
@@ -79,12 +168,19 @@ models:
     description: "Visit-level fact table — one row per patient visit"
     config:
       materialized: table
+    semantic_model:
+      enabled: true
+      name: visits
+    agg_time_dimension: visit_date
     columns:
       - name: visit_id
         description: "Primary key"
         data_tests:
           - unique
           - not_null
+        entity:
+          name: visit
+          type: primary
       - name: patient_id
         data_tests:
           - not_null
@@ -92,6 +188,9 @@ models:
               arguments:
                 to: ref('dim_patients')
                 field: patient_id
+        entity:
+          name: patient
+          type: foreign
       - name: provider_id
         data_tests:
           - not_null
@@ -99,6 +198,9 @@ models:
               arguments:
                 to: ref('dim_providers')
                 field: provider_id
+        entity:
+          name: provider
+          type: foreign
       - name: office_id
         data_tests:
           - not_null
@@ -106,33 +208,152 @@ models:
               arguments:
                 to: ref('dim_offices')
                 field: office_id
+        entity:
+          name: office
+          type: foreign
       - name: visit_date
         data_tests:
           - not_null
+        granularity: day
+        dimension:
+          type: time
+      - name: visit_type
+        description: "Type of dental visit"
+        dimension:
+          type: categorical
       - name: visit_status
         data_tests:
           - accepted_values:
                 arguments:
                   values: ['Completed', 'Cancelled', 'No-Show', 'Scheduled']
+        dimension:
+          type: categorical
+      - name: is_completed
+        description: "True when visit_status = Completed"
+        dimension:
+          type: categorical
+          expr: "cast(is_completed as string)"
+      - name: treatment_accepted
+        description: "Whether the patient accepted the treatment plan"
+        dimension:
+          type: categorical
+          expr: "cast(treatment_accepted as string)"
+      - name: payment_status
+        dimension:
+          type: categorical
       - name: net_revenue
         description: "Total collected on completed visits, 0 otherwise"
+    metrics:
+      - name: total_visits
+        type: simple
+        description: "Total number of visits across all statuses"
+        agg: count
+        expr: visit_id
+      - name: completed_visits
+        type: simple
+        description: "Count of completed visits"
+        agg: count
+        expr: visit_id
+        filter: "{{ Dimension('visit__is_completed') }} = 'true'"
+      - name: total_charges
+        type: simple
+        description: "Total gross charges"
+        agg: sum
+        expr: charge_amount
+      - name: total_insurance_collected
+        type: simple
+        description: "Total amount collected from insurance"
+        agg: sum
+        expr: insurance_paid
+      - name: total_patient_collected
+        type: simple
+        description: "Total amount collected from patients"
+        agg: sum
+        expr: patient_paid
+      - name: treatments_accepted
+        type: simple
+        description: "Count of visits where treatment was accepted"
+        agg: count
+        expr: visit_id
+        filter: "{{ Dimension('visit__treatment_accepted') }} = 'true'"
+      - name: unique_patients_seen
+        type: simple
+        description: "Count of distinct patients seen"
+        agg: count_distinct
+        expr: patient_id
 
   - name: fct_revenue
     description: "Daily revenue fact per office — designed for FP&A reporting"
     config:
       materialized: table
+    semantic_model:
+      enabled: true
+      name: daily_revenue
+    agg_time_dimension: revenue_date
     columns:
       - name: office_id
         data_tests:
           - not_null
+        entity:
+          name: office
+          type: foreign
+      - name: office_revenue
+        entity:
+          name: office_revenue
+          type: primary
+          expr: "concat(cast(office_id as string), '-', cast(revenue_date as string))"
       - name: revenue_date
         data_tests:
           - not_null
+        granularity: day
+        dimension:
+          type: time
+      - name: region
+        dimension:
+          type: categorical
+      - name: state
+        dimension:
+          type: categorical
       - name: gross_charges
         description: "Total billed amount for the day"
+      - name: insurance_collected
+        description: "Insurance payments collected for the day"
+      - name: patient_collected
+        description: "Patient payments collected for the day"
       - name: net_revenue
         description: "Insurance + patient payments collected"
       - name: avg_revenue_per_visit
         description: "Net revenue divided by completed visits"
       - name: treatment_acceptance_rate
         description: "Fraction of completed visits where treatment was accepted"
+    metrics:
+      - name: gross_charges
+        type: simple
+        description: "Total gross charges billed"
+        agg: sum
+        expr: gross_charges
+      - name: insurance_revenue
+        type: simple
+        description: "Total amount collected from insurance"
+        agg: sum
+        expr: insurance_collected
+      - name: patient_revenue
+        type: simple
+        description: "Total amount collected from patients"
+        agg: sum
+        expr: patient_collected
+      - name: net_revenue
+        type: simple
+        description: "Total net revenue collected (insurance + patient payments)"
+        agg: sum
+        expr: net_revenue
+      - name: daily_total_visits
+        type: simple
+        description: "Total number of visits rolled up to the revenue grain"
+        agg: sum
+        expr: total_visits
+      - name: daily_completed_visits
+        type: simple
+        description: "Completed visits rolled up to the revenue grain"
+        agg: sum
+        expr: completed_visits
