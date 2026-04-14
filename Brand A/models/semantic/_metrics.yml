@@ -1,6 +1,14 @@
 version: 2
 
 metrics:
+  - name: total_net_revenue
+    description: "Alias metric wrapper for net revenue"
+    type: derived
+    expr: base_net_revenue
+    input_metrics:
+      - name: net_revenue
+        alias: base_net_revenue
+
   - name: avg_revenue_per_visit
     description: "Average net revenue per completed visit"
     type: ratio
